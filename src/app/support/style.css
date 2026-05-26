@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* --- 1. VARIABLES ET RÉINITIALISATION --- */
+:root {
+  --primary-blue: #2563EB;
+  --sidebar-dark: #0F172A;
+  --bg-light: #F8FAFC;
+  --text-main: #1E293B;
+  --text-muted: #64748B;
+  --border-light: #E2E8F0;
+  --white: #FFFFFF;
+  --accent-orange: #FF7A30;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-light);
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-main);
+}
+
+/* --- 2. STRUCTURE GLOBALE --- */
+.dashboard-main { 
+    margin-left: 260px; 
+    flex: 1; 
+    background-color: var(--bg-light); 
+    min-height: 100vh;
+}
+
+/* --- 3. SECTION SUPPORT (NOUVEAU CSS) --- */
+.sup-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.sup-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.sup-tag {
+    background: #DBEAFE;
+    color: var(--primary-blue);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.sup-header h1 {
+    font-size: 2.5rem;
+    margin: 20px 0;
+    color: var(--sidebar-dark);
+}
+
+.sup-header h1 span {
+    color: var(--primary-blue);
+}
+
+/* Grille Responsive */
+.sup-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.sup-title {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+/* Accordéon FAQ */
+.faq-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.faq-box {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faq-box.open {
+    border-color: var(--primary-blue);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.05);
+}
+
+.faq-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.faq-q {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.faq-icon-wrapper {
+    color: var(--primary-blue);
+    font-size: 0.9rem;
+}
+
+.faq-bottom {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.faq-box.open .faq-bottom {
+    max-height: 200px;
+    margin-top: 15px;
+}
+
+/* Formulaire */
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.custom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.field input, .field textarea {
+    padding: 14px;
+    border: 1.5px solid var(--border-light);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.field input:focus, .field textarea:focus {
+    border-color: var(--primary-blue);
+}
+
+.sup-btn {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s;
+}
+
+.sup-btn:hover {
+    transform: translateY(-2px);
+    background: #1D4ED8;
+}
+
+/* --- 4. MEDIA QUERIES (RESPONSIVE) --- */
+
+@media (max-width: 1024px) {
+    .sup-grid {
+        grid-template-columns: 1fr; /* Passage sur une seule colonne */
+        gap: 50px;
+    }
+    
+    .dashboard-main {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .sup-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .sup-header p {
+        font-size: 0.9rem;
+    }
+
+    .sup-wrapper {
+        padding: 10px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    /* Styles pour la barre de navigation mobile (déjà existante dans ton code) */
+    .mobile-tab-bar { 
+        display: flex; 
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        background: var(--sidebar-dark);
+        border-radius: 20px;
+        padding: 15px;
+        z-index: 1000;
+    }
+}
+
+@media (max-width: 480px) {
+    .sup-title {
+        font-size: 1.2rem;
+    }
+
+    .faq-q {
+        font-size: 0.9rem;
+    }
+    
+    .sup-header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* --- 5. RESTE DE TON CSS INITIAL (SANS CHANGEMENTS) --- */
+.sidebar { width: 260px; background-color: var(--sidebar-dark); color: var(--white); position: fixed; height: 100vh; z-index: 100; }
+/* ... (Inclure ici le reste de tes classes .sidebar, .menu-item, .stat-card, etc.) */

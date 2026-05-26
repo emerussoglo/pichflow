@@ -1,0 +1,40 @@
+Maintenant ce qu'il faut faire, ce sera de réabiliser certais fichier et après il faut se connecter à la base de données
+et maintenant il faut aller créer les différente tables pour organiser les données.
+
+<iframe width="901" height="454" src="" title="Comment créer des documents sur pichflow ? Tutoriel " frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+
+
+-- 1. Suppression des lignes de prestations liées aux factures et devis de l'utilisateur
+DELETE FROM lignes_prestations 
+WHERE parent_id IN (
+    SELECT id FROM factures WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com')
+    UNION
+    SELECT id FROM devis WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com')
+);
+
+-- 2. Suppression des documents (Factures et Devis)
+DELETE FROM factures WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+DELETE FROM devis WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+
+-- 3. Suppression des données professionnelles et clients
+DELETE FROM sender_info WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+DELETE FROM clients WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+
+-- 4. Suppression de l'historique IA (Marketing et Copywriting)
+DELETE FROM marketing_history WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+DELETE FROM copywriting_history WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+
+-- 5. Suppression des réseaux sociaux et posts programmés
+DELETE FROM scheduled_posts WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+DELETE FROM social_accounts WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+
+-- 6. Suppression des transactions liées à l'email ou à l'ID
+DELETE FROM payment_transactions WHERE user_id = (SELECT id FROM users WHERE email = 'stoicisme69@gmail.com');
+DELETE FROM credit_transactions WHERE user_email = 'stoicisme69@gmail.com';
+DELETE FROM transactions WHERE email = 'stoicisme69@gmail.com';
+DELETE FROM pending_transactions WHERE email = 'stoicisme69@gmail.com';
+
+-- 7. Suppression finale de l'utilisateur
+DELETE FROM users WHERE email = 'stoicisme69@gmail.com';

@@ -1,0 +1,736 @@
+
+-- 1. On coupe la sécurité des liens (Clés étrangères)
+PRAGMA foreign_keys = OFF;
+
+-- 2. Supprime l'utilisateur spécifique (Remplace l'email)
+DELETE FROM users WHERE email = 'stoicisme69@gmail.com;
+
+-- 3. Nettoie toutes les données orphelines dans les autres tables
+-- On supprime tout ce qui n'appartient plus à un utilisateur existant
+DELETE FROM sender_info WHERE user_id NOT IN (SELECT id FROM users);
+DELETE FROM devis WHERE user_id NOT IN (SELECT id FROM users);
+DELETE FROM factures WHERE user_id NOT IN (SELECT id FROM users);
+DELETE FROM clients WHERE user_id NOT IN (SELECT id FROM users);
+DELETE FROM marketing_generations WHERE user_id NOT IN (SELECT id FROM users);
+DELETE FROM copywriting_generations WHERE user_id NOT IN (SELECT id FROM users);
+DELETE FROM marketing_history WHERE user_id NOT IN (SELECT id FROM users);
+DELETE FROM copywriting_history WHERE user_id NOT IN (SELECT id FROM users);
+
+-- 4. On remet la sécurité en marche
+PRAGMA foreign_keys = ON;
+
+
+
+
+
+
+
+
+webhook fedapay!:
+
+import { NextResponse } from "next/server";
+import { Webhook } from "fedapay";
+import { db } from "@/lib/db"; // Ton client LibSQL/Turso
+
+export async function POST(req: Request) {
+  // 1. Récupération de la signature et du secret
+  const sig = req.headers.get("x-fedapay-signature");
+  const endpointSecret = process.env.FEDAPAY_WEBHOOK_SECRET;
+
+  if (!sig || !endpointSecret) {
+    return NextResponse.json({ error: "Sécurité absente" }, { status: 400 });
+  }
+
+  try {
+    // 2. Lecture du corps brut (raw body)
+    const rawBody = await req.text();
+    
+    // 3. Vérification authentique de l'événement
+    const event = Webhook.constructEvent(rawBody, sig, endpointSecret);
+
+    // 4. Traitement uniquement si la transaction est approuvée
+    if (event.name === "transaction.approved") {
+            const transaction = event.entity || event.data || event;
+      
+      // Récupération des données personnalisées
+      const userEmail = transaction.custom_metadata?.user_email;
+      const nbCredits = parseInt(transaction.custom_metadata?.nb_credits);
+
+      if (userEmail && !isNaN(nbCredits)) {
+        // 🚀 Mise à jour de ta table Turso
+        // On utilise COALESCE pour s'assurer que si credits est NULL, on part de 0
+        await db.execute({
+          sql: "UPDATE users SET credits = COALESCE(credits, 0) + ? WHERE email = ?",
+          args: [nbCredits, userEmail.trim()],
+        });
+
+        console.log(`✅ SUCCESS: ${nbCredits} crédits livrés à ${userEmail}`);
+      }
+    }
+
+    // 5. Réponse 2xx immédiate pour acquitter la réception
+    return NextResponse.json({ received: true }, { status: 200 });
+
+  } catch (err: any) {
+    // En cas d'erreur de signature ou autre
+    console.error("⚠️ Webhook Error:", err.message);
+    return NextResponse.json({ error: err.message }, { status: 400 });
+  }
+}
+
+
+
+create transaction: import { NextResponse } from "next/server";
+import { Transaction } from "@/lib/fedapay";
+
+export async function POST(req: Request) {
+  try {
+    const { amount, email, nbCredits, currency } = await req.json();
+
+        // Déterminer l'URL de base selon l'environnement
+    const baseUrl = process.env.NODE_ENV === 'production' 
+  ? 'https://pichflow.vercel.app' 
+  : 'http://localhost:3000';
+    // 1. Vérification de sécurité des données entrantes
+    if (!amount || !email || !nbCredits) {
+      return NextResponse.json(
+        { error: "Données manquantes pour la transaction" },
+        { status: 400 },
+      );
+    }
+
+    // 2. Création de la transaction dans FedaPay
+    // 2. Création de la transaction dans FedaPay
+    const transaction = await Transaction.create({
+      description: `Achat de ${nbCredits} crédits - Pichflow`,
+      amount: Math.round(amount),
+      currency: { iso: currency || "XOF" }, // Utilise la devise passée ou XOF par défaut
+      callback_url: `${baseUrl}/buy-credits?status=success&added=${nbCredits}`,
+      customer: {
+        email: email.trim(),
+        firstname: "Client",
+        lastname: "Pichflow",
+      },
+      custom_metadata: {
+        user_email: email.trim(),
+        nb_credits: nbCredits,
+      },
+    });
+    // 3. Génération du token de paiement
+    const tokenResponse = await transaction.generateToken();
+
+    // 4. Vérification que l'URL existe bien dans la réponse
+    if (tokenResponse && tokenResponse.url) {
+      return NextResponse.json({ url: tokenResponse.url });
+    } else {
+      throw new Error("Lien de paiement non généré");
+    }
+  } catch (error: any) {
+    // Log précis pour débugger dans la console Vercel
+    console.error("❌ [FedaPay Error]:", error.message);
+
+    return NextResponse.json(
+      { error: "Erreur lors de la création du paiement. Veuillez réessayer." },
+      { status: 500 },
+    );
+  }
+}
+
+
+
+
+Maintenant tu viens de me faire un second modèle de facture qui est ceci : container.innerHTML = ` 
+    <div style="padding: 60px 50px; font-family: 'Roboto', sans-serif; color: #000; border-left: 15px solid ${colors.border}; min-height: 1130px; position: relative; background: ${colors.bg};">
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 60px;">
+        <div style="flex: 1;">
+          <h2 style="font-family: 'Antonio', sans-serif; font-size: 20px; font-weight: 800; margin: 0; color: #000;">${(item.senderNom || "PichFlow Service").toUpperCase()}</h2>
+          <p style="font-size: 13px; margin-top: 8px; color: #444; line-height: 1.5;">
+            ${item.senderAdresse}<br>
+            ${item.senderContact}
+            ${item.senderIfu ? `<br>IFU : ${item.senderIfu}` : ''}
+            ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
+          </p>
+        </div>
+        <div style="flex: 1; text-align: right;">
+          <h2 style="font-family: 'Antonio', sans-serif; font-size: 20px; font-weight: 800; margin: 0; color: #000;">${item.client.toUpperCase()}</h2>
+          <p style="font-size: 13px; margin-top: 8px; color: #444; line-height: 1.5;">
+            ${item.clientAdresse}<br>
+            ${item.clientContact}
+          </p>
+        </div>
+      </div> 
+
+      <div style="margin-bottom: 40px;">
+        <h1 style="font-family: 'Antonio', sans-serif; font-size: 32px; font-weight: 800; color: #000; margin: 0; letter-spacing: -1px;">Facture n° ${item.id}</h1>
+        <div style="display: flex; gap: 30px; margin-top: 15px; font-size: 13px; color: #666;">
+           <span>Émise le : <strong>${item.date}</strong></span>
+           <span>Échéance : <strong>${item.echeance}</strong></span>
+        </div>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
+        <thead>
+          <tr style="border-bottom: 2px solid #000; background: ${colors.table};">
+            <th style="font-family: 'Antonio', sans-serif; text-align: left; padding: 15px 10px; font-size: 12px; color: #000; text-transform: uppercase;">Libellé</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: center; padding: 15px 10px; font-size: 12px; color: #000; text-transform: uppercase; width: 80px;">Quantité</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 15px 10px; font-size: 12px; color: #000; text-transform: uppercase; width: 140px;">Prix Unitaire HT</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 15px 10px; font-size: 12px; color: #000; text-transform: uppercase; width: 140px;">Total HT</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${item.prestations.map((p) => `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 20px 10px; vertical-align: top;">
+                <div style="font-weight: 600; font-size: 14px; color: #000;">${p.description}</div>
+              </td>
+              <td style="padding: 20px 10px; text-align: center; font-size: 14px;">${p.quantite}</td>
+              <td style="padding: 20px 10px; text-align: right; font-size: 14px;">${p.prixUnitaire.toLocaleString()} ${item.devise}</td>
+              <td style="padding: 20px 10px; text-align: right; font-weight: 600; font-size: 14px; color: #000;">${(p.prixUnitaire * p.quantite).toLocaleString()} ${item.devise}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+
+      <div style="margin-left: auto; width: 320px;">
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;">
+          <span style="font-size: 14px; color: #666;">Total HT</span>
+          <span style="font-size: 14px; font-weight: 600;">${totalHT.toLocaleString()} ${item.devise}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 2px solid #000;">
+          <span style="font-size: 14px; color: #666;">TVA</span>
+          <span style="font-size: 14px; font-weight: 600;">${montantTVA.toLocaleString()} ${item.devise}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 20px 0; color: #000;">
+          <span style="font-family: 'Antonio', sans-serif; font-size: 18px; font-weight: 800; text-transform: uppercase;">Total TTC</span>
+          <span style="font-size: 22px; font-weight: 900;">${totalTTC.toLocaleString()} ${item.devise}</span>
+        </div>
+      </div>
+
+      <div style="position: absolute; bottom: 60px; left: 50px; width: calc(100% - 100px);">
+        <div style="font-size: 11px; color: #666; line-height: 1.8; margin-bottom: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+          <p style="margin: 0;">La facture devra être payée automatiquement ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
+          <p style="margin: 0;">Membre d'une association agréée, le règlement par espèce, par chèque et par carte bancaire est accepté.</p>
+          <p style="margin: 0;">TVA non applicable, art. 293 B du CGI.</p>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; font-size: 10px; color: #888;">
+          <div>
+            ${item.senderIfu ? `SIRET : ${item.senderIfu}` : ''}
+          </div>
+          <div style="text-align: right; font-family: 'Antonio', sans-serif; font-size: 12px; color: #000; font-weight: 800;">
+             Facture n° ${item.id}
+          </div>
+        </div>
+      </div>
+    </div>
+  `; Je veux que tu ajoute le second modele de manière que quand la personne veux télécharger la facture, il choisi d'abord le modele et choisi maintenant la couleur. Ajoute donc le second modèle. Et redonne moi les codes des sections du code qui sont concerné et tu ne dois en aucun cas enlever ce que j'ai fait. Tu me donne juste ce qui te concerne et tu mes dis les emplacement ou les mettre :  'use client';
+import React, { useState, useEffect } from 'react';
+import { createFactureAction, getFacturesAction, deleteFactureAction, getClientsAction, updateFactureStatusAction, sendFactureEmailAction } from './factureAction';
+
+interface Prestation {
+  description: string;
+  prixUnitaire: number;
+  quantite: number;
+}
+
+interface ClientSuggestion {
+  nom: string;
+  contact: string;
+  adresse: string;
+}
+
+interface Facture {
+  dbId?: string;
+  id: string;
+  client: string;
+  clientContact: string;
+  clientAdresse: string;
+  senderNom?: string;
+  senderAdresse?: string;
+  senderContact?: string;
+  senderIfu?: string;      // Ajouté
+  senderAutre?: string;    // Ajouté
+  tvaRate: number; 
+  prestations: Prestation[];
+  devise: string;
+  date: string;
+  echeance: string;
+  status: string;
+}
+
+export default function FacturesPage() {
+  const [factures, setFactures] = useState<Facture[]>([]);
+  const [savedClients, setSavedClients] = useState<ClientSuggestion[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('tous');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    client: '',
+    clientContact: '',
+    clientAdresse: '',
+    echeance: '',
+    devise: 'FCFA',
+    prestations: [{ description: '', prixUnitaire: 0, quantite: 1 }] as Prestation[]
+  });
+  const handleToggleStatus = async (dbId: string, selectedStatus: string) => {
+  // On appelle directement l'action avec la valeur sélectionnée (payer ou en attente)
+  const res = await updateFactureStatusAction(dbId, selectedStatus);
+  if (res.success) {
+    await loadData();
+  } else {
+    alert("Erreur lors de la mise à jour du statut");
+  }
+};
+  const loadData = async () => {
+    const [factData, clientData] = await Promise.all([
+      getFacturesAction(),
+      getClientsAction()
+    ]);
+    setFactures(factData as Facture[]);
+    setSavedClients(clientData as any);
+  };
+
+  useEffect(() => { loadData(); }, []);
+
+useEffect(() => {
+  if (isModalOpen) {
+    const today = new Date();
+    
+    // On ne calcule l'échéance auto que si elle n'est pas déjà définie
+    if (!formData.echeance) {
+      const nextMonth = new Date();
+      nextMonth.setDate(today.getDate() + 30);
+      const echeanceAuto = nextMonth.toISOString().split('T')[0];
+      
+      setFormData(prev => ({ 
+        ...prev, 
+        echeance: echeanceAuto 
+      }));
+    }
+  }
+}, [isModalOpen]); // On garde isModalOpen en dépendance
+
+const [showErrorPopup, setShowErrorPopup] = useState(false);
+const [errorMessage, setErrorMessage] = useState("");
+
+ 
+
+  useEffect(() => { 
+    const scripts = [
+      "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    ];
+    scripts.forEach(src => {
+      if (!document.querySelector(`script[src="${src}"]`)) {
+        const s = document.createElement("script");
+        s.src = src; s.async = true; document.body.appendChild(s);
+      }
+    });
+  }, []);
+
+
+const [showDownloadPopup, setShowDownloadPopup] = useState(false);
+const [selectedFacture, setSelectedFacture] = useState<Facture | null>(null); // Pour savoir quelle facture télécharger
+const [selectedTemplate, setSelectedTemplate] = useState('bleu'); // 'bleu' ou 'rose'
+
+
+const [showEmailPopup, setShowEmailPopup] = useState(false);
+const [emailDestinataire, setEmailDestinataire] = useState('');
+const [isSendingEmail, setIsSendingEmail] = useState(false);
+
+
+const [showEmailSuccess, setShowEmailSuccess] = useState(false);
+const [showEmailError, setShowEmailError] = useState(false);
+const [emailErrorMessage, setEmailErrorMessage] = useState("");
+
+
+
+  const handleSelectSavedClient = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedNom = e.target.value;
+    if (!selectedNom) return;
+    const clientFound = savedClients.find(c => c.nom === selectedNom);
+    if (clientFound) {
+      setFormData({
+        ...formData,
+        client: clientFound.nom,
+        clientContact: clientFound.contact,
+        clientAdresse: clientFound.adresse
+      });
+    }
+  };
+
+  const addPrestationLine = () => {
+    setFormData({ ...formData, prestations: [...formData.prestations, { description: '', prixUnitaire: 0, quantite: 1 }] });
+  };
+
+  const removePrestationLine = (index: number) => {
+    const newPrestations = formData.prestations.filter((_, i) => i !== index);
+    setFormData({ ...formData, prestations: newPrestations });
+  };
+
+  const updatePrestation = (index: number, field: keyof Prestation, value: string | number) => {
+    const newPrestations = [...formData.prestations];
+    newPrestations[index] = { ...newPrestations[index], [field]: value };
+    setFormData({ ...formData, prestations: newPrestations });
+  };
+
+  const calculateTotalHT = (prestations: Prestation[]) => {
+    return prestations.reduce((acc, curr) => acc + (curr.prixUnitaire * curr.quantite), 0);
+  };
+
+const downloadPDF = async (item: Facture, template: string) => {
+  // Nouvelle logique de couleurs (3 modèles)
+  const configs: any = {
+    bleu: { border: '#a5d1f0', bg: '#eef3f7', table: '#a5d1f0' },
+    rose: { border: '#FA5D89', bg: '#FEF7EC', table: '#FA5D89' },
+    violet: { border: '#D09EE7', bg: '#f0fdf4', table: '#D09EE7' }
+  };
+  
+  const colors = configs[template] || configs.bleu;
+
+  const totalHT = calculateTotalHT(item.prestations);
+  const montantTVA = totalHT * (item.tvaRate / 100); 
+  const totalTTC = totalHT + montantTVA;  
+
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed; left:-9999px; width:800px; background:white;';
+  document.body.appendChild(container);
+
+  container.innerHTML = ` 
+    <div style="padding: 50px; font-family: 'Roboto', sans-serif; color: #000; border-left: 15px solid ${colors.border}; min-height: 1130px; position: relative; background: ${colors.bg};">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">
+        <div>
+          <h2 style="font-family: 'Antonio', sans-serif; font-size: 22px; font-weight: 800; margin: 0; color: #000;">${(item.senderNom || "PichFlow Service").toUpperCase()}</h2>
+          <p style="font-size: 12px; margin-top: 5px; color: #444; line-height: 1.4;">
+            ${item.senderAdresse}<br>
+            ${item.senderContact}
+            ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
+            ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <h2 style="font-family: 'Antonio', sans-serif; font-size: 22px; font-weight: 800; color: #000; margin: 0; line-height: 1;">FACTURE</h2>
+          <p style="font-weight: 800; margin-top: 10px;">n° ${item.id}</p>
+        </div>
+      </div> 
+
+      <div style="display: flex; justify-content: space-between; margin-bottom: 40px; gap: 13px;">
+        <div style="flex: 1; border: 1.5px solid #e9edf0; padding: 15px; padding-left: 3px; border-radius: 2px;">
+          <p style="font-size: 10px; font-weight: 700;  margin-bottom: 8px; color: #666; ">Dates</p>
+          <p style="font-size: 13px; margin: 0;">Date de création : ${item.date}</p>
+          <p style="font-size: 13px; margin: 5px 0 0 0;">Echéance : ${item.echeance}</p>
+        </div>
+        <div style="flex: 1; border: 1.5px solid #e9edf0; text-align: right; padding: 15px; padding-right: 3px; border-radius: 2px; background: #ffffff55;">
+          <p style="font-size: 10px; font-weight: 700; margin-bottom: 8px; color: #666; ">Destinataire</p>
+          <p style="font-size: 15px; font-weight: 800; margin: 0;">${item.client.toUpperCase()}</p>
+          <p style="font-size: 12px; margin-top: 5px; color: #444;">${item.clientContact}<br>${item.clientAdresse}</p>
+        </div>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background: ${colors.table}; color: #000;">
+            <th style="font-family: 'Antonio', sans-serif; text-align: left; padding: 12px; font-size: 12px; color: #333232; text-transform: uppercase; letter-spacing: 0.5px;">Libellé / Description</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 120px;">Prix Unitaire</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 60px;">Qté</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 120px;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${item.prestations.map((p) => {
+            const verticalDivider = 'border-left: 1px solid #00000011;';
+            return `
+              <tr style="border-bottom: 1px solid #00000011;">
+                <td style="padding: 15px 12px; border: none; vertical-align: top;">
+                  <div style="font-weight: 600; font-size: 13px; color: #000;">${p.description}</div>
+                </td>
+                <td style="padding: 15px 12px; text-align: right; ${verticalDivider} font-size: 13px; vertical-align: top;">${p.prixUnitaire.toLocaleString()} ${item.devise}</td>
+                <td style="padding: 15px 12px; text-align: right; ${verticalDivider} font-size: 13px; vertical-align: top;">${p.quantite}</td>
+                <td style="padding: 15px 12px; text-align: right; font-weight: 600; ${verticalDivider} font-size: 13px; color: #000; vertical-align: top;">${(p.prixUnitaire * p.quantite).toLocaleString()} ${item.devise}</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+
+      <div style="margin-left: auto; width: 300px; margin-top: 30px; border: 1.5px solid #313030; background: #fff;">
+        <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #eceaea;">
+          <span style="font-size: 13px; color: #666;">Total HT</span>
+          <span style="font-size: 13px; font-weight: 800;">${totalHT.toLocaleString()} ${item.devise}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #eceaea;">
+          <span style="font-size: 13px; color: #666;">TVA</span>
+          <span style="font-size: 13px; font-weight: 800;">${montantTVA.toLocaleString()} ${item.devise}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 15px 12px; background: #313030; color: #fff;">
+          <span style="font-family: 'Antonio', sans-serif; font-size: 14px; font-weight: bold; text-transform: uppercase;">Total TTC </span>
+          <span style="font-size: 18px; font-weight: 900;">${totalTTC.toLocaleString()} ${item.devise}</span>
+        </div>
+      </div>
+
+      <div style="position: absolute; bottom: 40px; left: 50px; width: calc(100% - 100px);">
+        <div style="font-size: 11px; color: #555; line-height: 1.6; margin-bottom: 25px; max-width: 80%;">
+          <p style="margin: 0 0 5px 0;">La facture devra être payée automatiquement ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
+          <p style="margin: 0;">Le règlement par espèce, par chèque et par carte bancaire est accepté.</p>
+        </div>
+        <div style="text-align: center; border-top: 1px solid #e0e0e0; padding-top: 20px;">
+           <p style="font-style: italic; font-size: 13px; color: #000; font-weight: 600; margin: 0;">Merci pour votre confiance !</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  try {
+    const canvas = await (window as any).html2canvas(container, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    const pdf = new (window as any).jspdf.jsPDF('p', 'mm', 'a4');
+    pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width, undefined, 'FAST');
+    pdf.save(`Facture_${item.client}_${item.id}.pdf`);
+  } finally { 
+    document.body.removeChild(container); 
+  }
+};
+
+const sendPDFByEmail = async (item: Facture, template: string, email: string) => {
+  setIsSendingEmail(true);
+  
+  // 1. Logique de couleurs (identique à ton downloadPDF)
+  const configs: any = {
+    bleu: { border: '#a5d1f0', bg: '#eef3f7', table: '#a5d1f0' },
+    rose: { border: '#FA5D89', bg: '#FEF7EC', table: '#FA5D89' },
+    violet: { border: '#D09EE7', bg: '#f0fdf4', table: '#D09EE7' }
+  };
+  const colors = configs[template] || configs.bleu;
+
+  const totalHT = calculateTotalHT(item.prestations);
+  const montantTVA = totalHT * (item.tvaRate / 100); 
+  const totalTTC = totalHT + montantTVA;  
+
+  // 2. Création du container fantôme pour html2canvas
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed; left:-9999px; width:800px; background:white;';
+  document.body.appendChild(container);
+
+  // ... (ICI : Copie tout le bloc container.innerHTML de ta fonction downloadPDF) ...
+  
+  container.innerHTML = ` 
+    <div style="padding: 50px; font-family: 'Roboto', sans-serif; color: #000; border-left: 15px solid ${colors.border}; min-height: 1130px; position: relative; background: ${colors.bg};">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">
+        <div>
+          <h2 style="font-family: 'Antonio', sans-serif; font-size: 22px; font-weight: 800; margin: 0; color: #000;">${(item.senderNom || "PichFlow Service").toUpperCase()}</h2>
+          <p style="font-size: 12px; margin-top: 5px; color: #444; line-height: 1.4;">
+            ${item.senderAdresse}<br>
+            ${item.senderContact}
+            ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
+            ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <h2 style="font-family: 'Antonio', sans-serif; font-size: 22px; font-weight: 800; color: #000; margin: 0; line-height: 1;">FACTURE</h2>
+          <p style="font-weight: 800; margin-top: 10px;">n° ${item.id}</p>
+        </div>
+      </div> 
+
+      <div style="display: flex; justify-content: space-between; margin-bottom: 40px; gap: 13px;">
+        <div style="flex: 1; border: 1.5px solid #e9edf0; padding: 15px; padding-left: 3px; border-radius: 2px;">
+          <p style="font-size: 10px; font-weight: 700;  margin-bottom: 8px; color: #666; ">Informations</p>
+          <p style="font-size: 13px; margin: 0;">Date : ${item.date}</p>
+          <p style="font-size: 13px; margin: 5px 0 0 0;">Echéance : ${item.echeance}</p>
+        </div>
+        <div style="flex: 1; border: 1.5px solid #e9edf0; text-align: right; padding: 15px; padding-right: 3px; border-radius: 2px; background: #ffffff55;">
+          <p style="font-size: 10px; font-weight: 700; margin-bottom: 8px; color: #666; ">Destinataire</p>
+          <p style="font-size: 15px; font-weight: 800; margin: 0;">${item.client.toUpperCase()}</p>
+          <p style="font-size: 12px; margin-top: 5px; color: #444;">${item.clientContact}<br>${item.clientAdresse}</p>
+        </div>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background: ${colors.table}; color: #000;">
+            <th style="font-family: 'Antonio', sans-serif; text-align: left; padding: 12px; font-size: 12px; color: #333232; text-transform: uppercase; letter-spacing: 0.5px;">Libellé / Description</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 120px;">Prix Unitaire</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 60px;">Qté</th>
+            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 120px;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${item.prestations.map((p) => {
+            const verticalDivider = 'border-left: 1px solid #00000011;';
+            return `
+              <tr style="border-bottom: 1px solid #00000011;">
+                <td style="padding: 15px 12px; border: none; vertical-align: top;">
+                  <div style="font-weight: 600; font-size: 13px; color: #000;">${p.description}</div>
+                </td>
+                <td style="padding: 15px 12px; text-align: right; ${verticalDivider} font-size: 13px; vertical-align: top;">${p.prixUnitaire.toLocaleString()} ${item.devise}</td>
+                <td style="padding: 15px 12px; text-align: right; ${verticalDivider} font-size: 13px; vertical-align: top;">${p.quantite}</td>
+                <td style="padding: 15px 12px; text-align: right; font-weight: 600; ${verticalDivider} font-size: 13px; color: #000; vertical-align: top;">${(p.prixUnitaire * p.quantite).toLocaleString()} ${item.devise}</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+
+      <div style="margin-left: auto; width: 300px; margin-top: 30px; border: 1.5px solid #313030; background: #fff;">
+        <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #eceaea;">
+          <span style="font-size: 13px; color: #666;">Total HT</span>
+          <span style="font-size: 13px; font-weight: 800;">${totalHT.toLocaleString()} ${item.devise}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #eceaea;">
+          <span style="font-size: 13px; color: #666;">TVA</span>
+          <span style="font-size: 13px; font-weight: 800;">${montantTVA.toLocaleString()} ${item.devise}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 15px 12px; background: #313030; color: #fff;">
+          <span style="font-family: 'Antonio', sans-serif; font-size: 14px; font-weight: bold; text-transform: uppercase;">Total TTC </span>
+          <span style="font-size: 18px; font-weight: 900;">${totalTTC.toLocaleString()} ${item.devise}</span>
+        </div>
+      </div>
+
+      <div style="position: absolute; bottom: 40px; left: 50px; width: calc(100% - 100px);">
+        <div style="font-size: 11px; color: #555; line-height: 1.6; margin-bottom: 25px; max-width: 80%;">
+          <p style="margin: 0 0 5px 0;">La facture devra être payée automatiquement ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
+          <p style="margin: 0;">Le règlement par espèce, par chèque et par carte bancaire est accepté.</p>
+        </div>
+        <div style="text-align: center; border-top: 1px solid #e0e0e0; padding-top: 20px;">
+           <p style="font-style: italic; font-size: 13px; color: #000; font-weight: 600; margin: 0;">Merci pour votre confiance !</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  try {
+    const canvas = await (window as any).html2canvas(container, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    const pdf = new (window as any).jspdf.jsPDF('p', 'mm', 'a4');
+    pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
+    
+    // Extraction du Base64 (sans le préfixe data:application/pdf;base64,)
+    const pdfBase64 = pdf.output('datauristring').split(',')[1];
+
+    // 3. APPEL AU BACKEND
+    const res = await sendFactureEmailAction(email, pdfBase64, item.id);
+
+    if (res.success) {
+      setShowEmailPopup(false); // On ferme le formulaire de saisie
+      setEmailDestinataire('');
+      setShowEmailSuccess(true); // On ouvre le popup de succès
+    } else {
+      setEmailErrorMessage(res.error || "Le serveur n'a pas pu envoyer l'email.");
+      setShowEmailError(true); // On ouvre le popup d'erreur
+    }
+  } catch (err) {
+    setErrorMessage("Erreur lors de la génération du mail");
+    setShowErrorPopup(true);
+  } finally {
+    setIsSendingEmail(false);
+    document.body.removeChild(container);
+  }
+};
+
+
+ const handleSave = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const res = await createFactureAction(formData);
+
+    if (res.success) {
+      await loadData();
+      setIsModalOpen(false);
+      
+      // On réinitialise tout le formulaire
+      setFormData({
+        client: '', 
+        clientContact: '', 
+        clientAdresse: '', 
+        echeance: '', // Laisser vide pour que le useEffect puisse pré-remplir la prochaine fois
+        devise: 'FCFA',
+        prestations: [{ description: '', prixUnitaire: 0, quantite: 1 }]
+      });
+    } else {
+      // --- MODIFICATION ICI ---
+      // Au lieu de l'alert, on utilise ton nouveau popup
+      setErrorMessage(res.error || "Une erreur est survenue lors de la création");
+      setShowErrorPopup(true);
+    }
+  } catch (error) {
+    // Gestion des erreurs de réseau/serveur inattendues
+    setErrorMessage("Impossible de contacter le serveur. Vérifiez votre connexion.");
+    setShowErrorPopup(true);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+
+  const handleDelete = async (dbId: string) => {
+    if (confirm("Supprimer définitivement cette facture ?")) {
+      const res = await deleteFactureAction(dbId);
+      if (res.success) await loadData();
+    }
+  };
+
+ const filtered = factures.filter(f => {
+  const matchesSearch = f.client.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                        f.id.toLowerCase().includes(searchTerm.toLowerCase());
+  
+  const matchesStatus = filterStatus === 'tous' || f.status === filterStatus;
+
+  return matchesSearch && matchesStatus;
+});
+
+  return (
+    <div className="factures-container"> 
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content custom-modal">
+            <h3>Nouvelle Facture</h3>
+            <form onSubmit={handleSave} className="modern-form">
+              <div className="form-section">
+                <div style={{marginBottom: '10px'}}>
+                    <label style={{fontSize: '11px', color: '#666', marginBottom: '4px', display: 'block'}}>CHOISIR UN CLIENT EXISTANT (OPTIONNEL)</label>
+                    <select 
+                        style={{width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd'}}
+                        onChange={handleSelectSavedClient}
+                        defaultValue=""
+                    >
+                        <option value="" disabled>-- Sélectionner un client --</option>
+                        {savedClients.map((c, i) => (
+                            <option key={i} value={c.nom}>{c.nom}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <input type="text" placeholder="Nom du Client" required value={formData.client} onChange={(e)=>setFormData({...formData, client: e.target.value})} className="main-input" />
+                <div className="row">
+                  <input style={{width: '100%'}} type="text" placeholder="Contact (Tél/Email)" required value={formData.clientContact} onChange={(e)=>setFormData({...formData, clientContact: e.target.value})} /> 
+                  <input style={{width: '100%'}} type="text" placeholder="Adresse Client" required value={formData.clientAdresse} onChange={(e)=>setFormData({...formData, clientAdresse: e.target.value})} />
+                </div>
+                <div className="row">
+                  <div style={{width: '100%'}}>
+                    <label style={{fontSize: '11px', color: '#666', marginBottom: '4px', display: 'block'}}>DATE D'ÉCHÉANCE (Auto +30j)</label>
+                    <input style={{textTransform: 'uppercase', width: '100%'}} type="date" required value={formData.echeance} onChange={(e)=>setFormData({...formData, echeance: e.target.value})} />
+                 
+                  </div>
+                  <div style={{width: '100%'}}>
+                    <label style={{fontSize: '11px', color: '#666', marginBottom: '4px', display: 'block'}}>DEVISE</label>
+                    <select style={{width: '100%'}} value={formData.devise} onChange={(e)=>setFormData({...formData, devise: e.target.value})}>
+                       <option value="FCFA">FCFA</option>
+                       <option value="€">EUR (€)</option>
+                       <option value="$">USD ($)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>  
+
+              <div className="prestations-list">
+                <label>Prestations</label>
+                <div className="prestations-scroll-area">
+                  {formData.prestations.map((p, index) => (
+                    <div key={index} className="prestation-row" style={{position: 'relative'}}>
+                      <input type="text" placeholder="Description" value={p.description} onChange={(e) => updatePrestation(index, 'description', e.target.value)} required />
+                      <div className="row-inner" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                         <input type="number" placeholder="Prix unitaire" min="0" step="1" onChange={(e) => updatePrestation(index, 'prixUnitaire', Math.max(0, parseFloat(e.target.val
