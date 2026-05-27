@@ -231,7 +231,7 @@ const exportToPDF = async () => {
         </div>
       )}
 
-      <div className="reports-header-actions no-print" style={{ display: 'flex', justifycontent: 'space-between', displayFlex: 'flex', justifyContent: 'space-between', marginBottom: '25px', alignItems: 'center' }}>
+      <div className="reports-header-actions no-print" style={{ display: 'flex', justifyContent: 'space-between', displayFlex: 'flex', justifyContent: 'space-between', marginBottom: '25px', alignItems: 'center' }}>
         <h2 style={{ color: "var(--primary-color)", margin: 0 }}>Rapport d'activité</h2>
         <button className="btn-export" onClick={exportToPDF} style={{ backgroundColor: '#1e3a8a', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '8px', cursor: 'pointer', fontWeight: '500' }}>
         <i className="fa-solid fa-file-pdf"></i> Export PDF
