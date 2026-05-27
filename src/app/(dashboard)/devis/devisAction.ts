@@ -196,10 +196,10 @@ export async function deleteDevisAction(dbId: string) {
   } catch (e) { return { success: false }; }
 }
 
-/**
+/** 
  * ENVOI PAR EMAIL DU DEVIS
  */
-export async function sendDevisEmailAction(emailDestinataire: string, pdfBase64: string, numeroDevis: string) {
+export async function sendFactureEmailAction(emailDestinataire: string, pdfBase64: string, numeroDevis: string) {
   try {
     const userId = await getAuthUserId();
     if (!userId) return { success: false, error: "Non connecté" };

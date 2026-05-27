@@ -10,7 +10,7 @@ import nodemailer from "nodemailer";
  * Récupère l'ID de l'utilisateur via le JWT
  */
 async function getAuthUserId() {
-  const cookieStore = await cookies();
+  const cookieStore = await cookies(); 
   const token = cookieStore.get("pichflow_token")?.value;
   if (!token) return null;
   try {
