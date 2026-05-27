@@ -1,11 +1,14 @@
 "use server";
+
 import { db } from "@/lib/db";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { revalidatePath } from "next/cache";
-import nodemailer from "nodemailer"; // À installer
+import nodemailer from "nodemailer";
 
-
+/**
+ * Récupère l'ID de l'utilisateur via le JWT
+ */
 async function getAuthUserId() {
   const cookieStore = await cookies();
   const token = cookieStore.get("pichflow_token")?.value;
@@ -16,6 +19,9 @@ async function getAuthUserId() {
   } catch (error) { return null; }
 }
 
+/**
+ * Récupère les clients pour le formulaire
+ */
 export async function getClientsAction() {
   try {
     const userId = await getAuthUserId();
@@ -28,11 +34,15 @@ export async function getClientsAction() {
   } catch (e) { return []; }
 }
 
+/**
+ * CRÉATION : Applique la TVA de sender_info au devis et génère un numéro chronologique
+ */
 export async function createDevisAction(formData: any) {
   try {
     const userId = await getAuthUserId();
     if (!userId) return { success: false, error: "Non connecté" };
 
+    // 1. Vérification des crédits
     const userRes = await db.execute({
       sql: "SELECT credits FROM users WHERE id = ?",
       args: [userId],
@@ -40,7 +50,7 @@ export async function createDevisAction(formData: any) {
     const currentCredits = Number(userRes.rows[0]?.credits || 0);
     if (currentCredits < 5) return { success: false, error: "Crédits insuffisants (5 requis)" };
 
-    // RÉCUPÉRATION DES INFOS SENDER (Inclus ifu_siret et autre_num) 
+    // 2. RÉCUPÉRATION DES INFOS SENDER 
     const senderRes = await db.execute({
       sql: "SELECT nom_service, adresse, contact, tva_rate, ifu_siret, autre_num FROM sender_info WHERE user_id = ?",
       args: [userId],
@@ -48,34 +58,64 @@ export async function createDevisAction(formData: any) {
     const sender = senderRes.rows[0];
     const tvaRate = Number(sender?.tva_rate || 0);
 
+    // 3. GÉNÉRATION CHRONOLOGIQUE DU NUMÉRO DE DEVIS
+    const currentYear = new Date().getFullYear();
+    
+    // On cherche le dernier devis de l'utilisateur pour l'année en cours
+    const lastDevisRes = await db.execute({
+      sql: `SELECT numero_devis FROM devis 
+            WHERE user_id = ? AND numero_devis LIKE ? 
+            ORDER BY id DESC LIMIT 1`,
+      args: [userId, `${currentYear}-%`],
+    });
+
+    let nextCount = 1;
+
+    if (lastDevisRes.rows.length > 0) {
+      const lastNumero = lastDevisRes.rows[0].numero_devis as string; // ex: "2026-003"
+      const parts = lastNumero.split("-");
+      if (parts.length === 2) {
+        const lastCount = parseInt(parts[1], 10);
+        if (!isNaN(lastCount)) {
+          nextCount = lastCount + 1;
+        }
+      }
+    }
+
+    // Formatage avec padding de zéros (ex: 1 -> "001", 15 -> "015")
+    const formattedCount = String(nextCount).padStart(3, "0");
+    const numeroDevis = `${currentYear}-${formattedCount}`;
+
     const devisUuid = "dev_" + Date.now().toString();
-    const numeroDevis = `${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
 
     const queries: any[] = [
+      // Déduction crédits
       { sql: "UPDATE users SET credits = credits - 5 WHERE id = ?", args: [userId] },
+      // Insertion devis
       {
         sql: `INSERT INTO devis (
           id, user_id, numero_devis, sender_nom, sender_adresse, sender_contact, 
           client_nom, client_contact, client_adresse, devise, date_emission, date_echeance, tva_rate
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         args: [
-  devisUuid, 
-  userId, 
-  numeroDevis, 
-  sender?.nom_service || "Nom du Service", 
-  sender?.adresse || "", 
-  sender?.contact || "",
-  formData.client, 
-  formData.clientContact, 
-  formData.clientAdresse,
-  formData.devise, 
-  new Date().toLocaleDateString('fr-FR'), // Date d'émission (déjà en format FR)
-  new Date(formData.echeance).toLocaleDateString('fr-FR'), // <--- MODIFICATION ICI
-  tvaRate
-]
+          devisUuid, 
+          userId, 
+          numeroDevis, 
+          sender?.nom_service || "Nom du Service", 
+          sender?.adresse || "", 
+          sender?.contact || "",
+          formData.client, 
+          formData.clientContact, 
+          formData.clientAdresse,
+          formData.devise, 
+          new Date().toLocaleDateString('fr-FR'), 
+          new Date(formData.echeance).toLocaleDateString('fr-FR'), 
+          tvaRate
+        ]
       }
     ];
 
+    // Lignes de prestations
     formData.prestations.forEach((p: any) => {
       queries.push({
         sql: `INSERT INTO lignes_prestations (id, parent_id, parent_type, description, prix_unitaire, quantite) VALUES (?, ?, ?, ?, ?, ?)`,
@@ -87,17 +127,19 @@ export async function createDevisAction(formData: any) {
     revalidatePath("/devis");
     return { success: true };
   } catch (error) {
+    console.error("Erreur creation devis:", error);
     return { success: false, error: "Erreur serveur" };
   }
 }
 
+/**
+ * LISTE : Renvoie les devis triés
+ */
 export async function getDevisAction() {
   try {
     const userId = await getAuthUserId();
     if (!userId) return [];
 
-    // On récupère aussi ifu_siret et autre_num si jamais tu décides de les ajouter à la table devis plus tard
-    // Pour l'instant, on s'assure de récupérer les infos actuelles du profil pour le PDF
     const senderRes = await db.execute({
       sql: "SELECT ifu_siret, autre_num FROM sender_info WHERE user_id = ?",
       args: [userId]
@@ -140,6 +182,9 @@ export async function getDevisAction() {
   } catch (e) { return []; }
 }
 
+/**
+ * SUPPRESSION
+ */
 export async function deleteDevisAction(dbId: string) {
   try {
     await db.batch([
@@ -151,31 +196,30 @@ export async function deleteDevisAction(dbId: string) {
   } catch (e) { return { success: false }; }
 }
 
-
-
-export async function sendFactureEmailAction(emailDestinataire: string, pdfBase64: string, numeroFacture: string) {
+/**
+ * ENVOI PAR EMAIL DU DEVIS
+ */
+export async function sendDevisEmailAction(emailDestinataire: string, pdfBase64: string, numeroDevis: string) {
   try {
     const userId = await getAuthUserId();
     if (!userId) return { success: false, error: "Non connecté" };
 
-    // Configuration du transporteur (Exemple avec Gmail ou SMTP classique)
-    // Note : Pour Gmail, utilise un "Mot de passe d'application"
     const transporter = nodemailer.createTransport({
       service: "gmail", 
       auth: {
-        user: process.env.GMAIL_USER, // Ton email : ex@gmail.com
-        pass: process.env.GMAIL_APP_PASSWORD, // Ton mot de passe d'application
+        user: process.env.GMAIL_USER, 
+        pass: process.env.GMAIL_APP_PASSWORD, 
       },
     });
 
     const mailOptions = {
-      from: `"Chèr(e) client(e)" <${process.env.EMAIL_USER}>`,
+      from: `"Pichflow" <${process.env.GMAIL_USER}>`,
       to: emailDestinataire,
-      subject: `Votre Devis ${numeroFacture}`,
-      text: `Veuillez trouver ci-joint votre devis ${numeroFacture}.\n\nCordialement,\nL'équipe.`,
+      subject: `Votre Devis ${numeroDevis}`,
+      text: `Veuillez trouver ci-joint votre devis ${numeroDevis}.\n\nCordialement,\nL'équipe Pichflow.`,
       attachments: [
         {
-          filename: `Devis_${numeroFacture}.pdf`,
+          filename: `Devis_${numeroDevis}.pdf`,
           content: pdfBase64,
           encoding: 'base64'
         }
@@ -186,7 +230,7 @@ export async function sendFactureEmailAction(emailDestinataire: string, pdfBase6
     return { success: true };
 
   } catch (error) {
-    console.error("Erreur Nodemailer:", error);
+    console.error("Erreur Nodemailer Devis:", error);
     return { success: false, error: "Erreur lors de l'envoi de l'email" };
   }
 }

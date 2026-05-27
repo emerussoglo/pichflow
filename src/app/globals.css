@@ -287,18 +287,18 @@ body {
 
 /* Lueurs bleues à gauche */
 
-.hero::before {
+/* .hero::before {
   background: var(--sup-primary, #2563eb);
   top: 25%;
   left: -10%;
-}
+} */
 
 /* Lueurs oranges à droite */
-.hero::after {
+/* .hero::after {
   background: var(--accent, #ff7a30);
   bottom: 30%;
   right: -10%;
-}
+} */
 
 /* Optionnel : Une troisième lueur centrale très légère */
 .hero-btns::before {
@@ -742,34 +742,9 @@ body {
   z-index: 1; /* Pour rester au-dessus des lueurs du hero */
 }
 
-/* Base commune pour les néons des features */
-.features::before,
-.features::after {
-  content: "";
-  position: absolute;
-  width: 200px; 
-  height: 200px;
-  border-radius: 50%;
-  filter: blur(150px);
-  z-index: -1;
-  opacity: 0.3; /* Un peu plus discret pour ne pas gêner la lecture des cartes */
-  pointer-events: none;
-}
 
-/* Lueur Orange à gauche (en haut de section) */
-.features::before {
-  background: var(--accent-orange, #f5690b);
-  top: 150px;
-  left: -15%;
-}
 
-/* Lueur Bleue à droite (en bas de section) */
-.features::after {
-  background: var(--primary-blue, #2563eb);
-  bottom: 0;
-  right: -15%;
-  display: none;
-}
+
 
 /* --- ADAPTATION RESPONSIVE --- */
 @media (max-width: 768px) {
@@ -807,6 +782,7 @@ body {
 
 .features-header p {
   color: var(--text-grey);
+  
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
@@ -825,7 +801,7 @@ body {
   background: var(--white);
   padding: 15px;
   border-radius: 20px;
-  border: 1px solid #dfe8f1;
+  border: 2px solid #ecf0f5;
   transition: all 0.3s ease;
 flex: 0 1 320px; /* Ne grandit pas (0), peut rétrécir (1), base de 320px */
   width: 100%;

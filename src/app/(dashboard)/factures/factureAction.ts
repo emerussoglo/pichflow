@@ -4,8 +4,7 @@ import { db } from "@/lib/db";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { revalidatePath } from "next/cache";
-import nodemailer from "nodemailer"; // À installer
-
+import nodemailer from "nodemailer";
 
 /**
  * Récupère l'ID de l'utilisateur via le JWT
@@ -41,7 +40,7 @@ export async function getClientsAction() {
 }
 
 /**
- * CRÉATION : Applique la TVA de sender_info à la facture
+ * CRÉATION : Applique la TVA de sender_info à la facture et génère un numéro chronologique
  */
 export async function createFactureAction(formData: any) {
   try {
@@ -65,8 +64,35 @@ export async function createFactureAction(formData: any) {
     const sender = senderRes.rows[0];
     const tvaAAppliquer = Number(sender?.tva_rate || 0);
 
+    // 3. GÉNÉRATION CHRONOLOGIQUE DU NUMÉRO DE FACTURE
+    const currentYear = new Date().getFullYear();
+    
+    // On cherche la dernière facture de l'utilisateur pour l'année en cours
+    const lastFactureRes = await db.execute({
+      sql: `SELECT numero_facture FROM factures 
+            WHERE user_id = ? AND numero_facture LIKE ? 
+            ORDER BY id DESC LIMIT 1`,
+      args: [userId, `${currentYear}-%`],
+    });
+
+    let nextCount = 1;
+
+    if (lastFactureRes.rows.length > 0) {
+      const lastNumero = lastFactureRes.rows[0].numero_facture as string; // ex: "2026-002"
+      const parts = lastNumero.split("-");
+      if (parts.length === 2) {
+        const lastCount = parseInt(parts[1], 10);
+        if (!isNaN(lastCount)) {
+          nextCount = lastCount + 1;
+        }
+      }
+    }
+
+    // Formatage avec padding de zéros (ex: 1 -> "001", 12 -> "012")
+    const formattedCount = String(nextCount).padStart(3, "0");
+    const numeroFacture = `${currentYear}-${formattedCount}`;
+
     const factureUuid = "fact_" + Date.now().toString();
-    const numeroFacture = `${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 90000)}`;
  
     const queries: any[] = [
       // Déduction crédits
@@ -94,12 +120,12 @@ export async function createFactureAction(formData: any) {
           new Date().toLocaleDateString('fr-FR'), 
           new Date(formData.echeance).toLocaleDateString('fr-FR'),
           tvaAAppliquer,
-          'en attente' // Statut initial
+          'en attente'
         ]
       }
     ];
 
-    // 3. Lignes de prestations
+    // 4. Lignes de prestations
     formData.prestations.forEach((p: any) => {
       queries.push({
         sql: `INSERT INTO lignes_prestations (id, parent_id, parent_type, description, prix_unitaire, quantite) VALUES (?, ?, ?, ?, ?, ?)`,
@@ -148,7 +174,7 @@ export async function getFacturesAction() {
         senderIfu: String(f.ifu_siret || ""),
         senderAutre: String(f.autre_num || ""),
         tvaRate: Number(f.tva_rate || 0),
-        status: String(f.status || 'en attente'), // Récupération du statut
+        status: String(f.status || 'en attente'),
         prestations: lines.rows.map((l: any) => ({
           description: String(l.description),
           prixUnitaire: Number(l.prix_unitaire),
@@ -200,29 +226,27 @@ export async function deleteFactureAction(dbId: string) {
   }
 }
 
-
-
-
+/**
+ * ENVOI PAR EMAIL
+ */
 export async function sendFactureEmailAction(emailDestinataire: string, pdfBase64: string, numeroFacture: string) {
   try {
     const userId = await getAuthUserId();
     if (!userId) return { success: false, error: "Non connecté" };
 
-    // Configuration du transporteur (Exemple avec Gmail ou SMTP classique)
-    // Note : Pour Gmail, utilise un "Mot de passe d'application"
     const transporter = nodemailer.createTransport({
       service: "gmail", 
       auth: {
-        user: process.env.GMAIL_USER, // Ton email : ex@gmail.com
-        pass: process.env.GMAIL_APP_PASSWORD, // Ton mot de passe d'application
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
       },
     });
 
     const mailOptions = {
-      from: `"Chèr(e) client" <${process.env.EMAIL_USER}>`,
+      from: `"Pichflow" <${process.env.GMAIL_USER}>`,
       to: emailDestinataire,
       subject: `Votre Facture ${numeroFacture}`,
-      text: `Veuillez trouver ci-joint votre facture ${numeroFacture}.\n\nCordialement,\nL'équipe.`,
+      text: `Veuillez trouver ci-joint votre facture ${numeroFacture}.\n\nCordialement,\nL'équipe Pichflow.`,
       attachments: [
         {
           filename: `Facture_${numeroFacture}.pdf`,
