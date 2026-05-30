@@ -98,7 +98,7 @@ export async function createFactureAction(formData: any) {
       // Déduction crédits
       { sql: "UPDATE users SET credits = credits - 5 WHERE id = ?", args: [userId] },
       // Insertion facture avec status par défaut
-      {
+      { 
         sql: `INSERT INTO factures (
           id, user_id, numero_facture, sender_nom, sender_adresse, sender_contact, 
           ifu_siret, autre_num, client_nom, client_contact, client_adresse, 
@@ -146,10 +146,22 @@ export async function createFactureAction(formData: any) {
 /**
  * LISTE : Renvoie les factures avec leur TVA et leur STATUS
  */
+/**
+ * LISTE : Renvoie les factures avec leur TVA et leur STATUS
+ */
 export async function getFacturesAction() {
   try {
     const userId = await getAuthUserId();
     if (!userId) return [];
+
+    // 1. On récupère le logo et la méthode de paiement de l'utilisateur dans sender_info
+    const senderRes = await db.execute({
+      sql: "SELECT logo, payment_method FROM sender_info WHERE user_id = ?",
+      args: [userId]
+    });
+    
+    const userLogo = senderRes.rows[0]?.logo ? String(senderRes.rows[0].logo) : "";
+    const userPaymentMethod = senderRes.rows[0]?.payment_method ? String(senderRes.rows[0].payment_method) : "";
 
     const res = await db.execute({
       sql: "SELECT * FROM factures WHERE user_id = ? ORDER BY id DESC",
@@ -173,6 +185,8 @@ export async function getFacturesAction() {
         senderContact: String(f.sender_contact || ""),
         senderIfu: String(f.ifu_siret || ""),
         senderAutre: String(f.autre_num || ""),
+        senderLogo: userLogo,                  // <--- AJOUTÉ : Reçu dans le composant (ex: item.senderLogo)
+        paymentMethod: userPaymentMethod,      // <--- AJOUTÉ : Reçu dans le composant (ex: item.paymentMethod)
         tvaRate: Number(f.tva_rate || 0),
         status: String(f.status || 'en attente'),
         prestations: lines.rows.map((l: any) => ({

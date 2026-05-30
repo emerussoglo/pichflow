@@ -1,6 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { createFactureAction, getFacturesAction, deleteFactureAction, getClientsAction, updateFactureStatusAction, sendFactureEmailAction } from './factureAction';
+import { getInvoiceHTML, templateConfigs } from './invoiceTemplates';
+
+
 
 interface Prestation {
   description: string;
@@ -18,7 +21,7 @@ interface Facture {
   dbId?: string;
   id: string;
   client: string;
-  clientContact: string;
+  clientContact: string; 
   clientAdresse: string;
   senderNom?: string;
   senderAdresse?: string;
@@ -156,178 +159,17 @@ const [emailErrorMessage, setEmailErrorMessage] = useState("");
     return prestations.reduce((acc, curr) => acc + (curr.prixUnitaire * curr.quantite), 0);
   };
 
-const getInvoiceHTML = (item: Facture, colors: any, layout: string) => {
-  const totalHT = calculateTotalHT(item.prestations);
-  const montantTVA = totalHT * (item.tvaRate / 100); 
-  const totalTTC = totalHT + montantTVA;
-
-  if (layout === 'moderne') {
-    // TON SECOND MODÈLE (Celui que je viens de te faire)
-    return `
-    <div style="padding: 50px 40px; font-family: 'Roboto', sans-serif; color: #000;  min-height: 1130px; position: relative; background: ${colors.bg};">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-        <div style="flex: 1;">
-          <h2 style="font-family: 'Antonio', sans-serif; font-size: 20px; font-weight: 800; margin: 0; color: #000;">${(item.senderNom || "PichFlow Service").toUpperCase()}</h2>
-          <p style="font-size: 13px; margin-top: 8px; color: #444; line-height: 1.5;">
-            ${item.senderAdresse}<br>${item.senderContact}${item.senderIfu ? `<br>IFU : ${item.senderIfu}` : ''}${item.senderAutre ? `<br>${item.senderAutre}` : ''}
-          </p>
-        </div>
-        <div style="flex: 1; text-align: right;">
-          <p>Client</p>
-          <h2 style="font-family: 'Antonio', sans-serif; font-size: 20px; font-weight: 800; margin: 0; color: #000;">${item.client.toUpperCase()}</h2>
-          <p style="font-size: 13px; margin-top: 8px; color: #444; line-height: 1.5;">${item.clientAdresse}<br>${item.clientContact}</p>
-        </div>
-      </div> 
-      <div style="margin-bottom: 40px;">
-        <h1 style="font-family: 'Antonio', sans-serif; font-size: 18px; font-weight: 800; color: #000; margin: 0; letter-spacing: -1px;">Facture n° ${item.id}</h1>
-        <div style="display: flex; gap: 20px; margin-top: 15px; font-size: 13px; color: #666;">
-           <span>Émise le : <strong>${item.date}</strong></span><span>Échéance : <strong>${item.echeance}</strong></span>
-        </div>
-      </div>
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-        <thead>
-          <tr style=" background: ${colors.table};">
-            <th style="font-family: 'Antonio', sans-serif; text-align: left; padding: 15px 10px; font-size: 12px; text-transform: uppercase;">Libellé / Description</th>
-            <th style="font-family: 'Antonio', sans-serif; text-align: center; padding: 15px 10px; font-size: 12px; text-transform: uppercase; width: 80px;">Qté</th>
-            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 15px 10px; font-size: 12px; text-transform: uppercase; width: 140px;">PU HT</th>
-            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 15px 10px; font-size: 12px; text-transform: uppercase; width: 140px;">Total HT</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${item.prestations.map((p) => `
-            <tr style="border-bottom: 1px solid #eee;">
-              <td style="padding: 10px 5px;"><div style="font-weight: 500; font-size: 14px;">${p.description}</div></td>
-              <td style="padding: 10px 5px; text-align: center; font-size: 14px;">${p.quantite}</td>
-              <td style="padding: 10px 5px; text-align: right; font-size: 14px;">${p.prixUnitaire.toLocaleString()} ${item.devise}</td>
-              <td style="padding: 10px 5px; text-align: right; font-weight: 500; font-size: 14px;">${(p.prixUnitaire * p.quantite).toLocaleString()} ${item.devise}</td>
-            </tr>`).join('')}
-        </tbody>
-      </table>
-      <div style="margin-left: auto; width: 320px;">
-        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;"><span style="color:#666">Total HT</span><span>${totalHT.toLocaleString()} ${item.devise}</span></div>
-        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 2px solid #000;"><span style="color:#666">TVA</span><span>${montantTVA.toLocaleString()} ${item.devise}</span></div>
-        <div style="display: flex; justify-content: space-between; padding: 20px 0;"><span style="font-family:'Roboto'; font-size:16px; font-weight:700;">TOTAL TTC</span><span style="font-size:16px; font-weight:700;">${totalTTC.toLocaleString()} ${item.devise}</span></div>
-      </div>
-      <div style="position: absolute; bottom: 60px; left: 50px; width: calc(100% - 100px); font-size: 11px; color: #666; border-top: 1px solid #eee; padding-top: 20px;">
-        <p>La facture devra être payée automatiquement ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
-        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-          <span>${item.senderIfu ? `${item.senderIfu}` : ''}</span>
-          <span style="font-family:'Antonio'; font-weight:800;">Facture n° ${item.id}</span>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  // TON PREMIER MODÈLE (Celui avec les cadres autour de Date/Destinataire)
-  return `
-    <div style="padding: 50px; font-family: 'Roboto', sans-serif; color: #000; border-left: 15px solid ${colors.border}; min-height: 1130px; position: relative; background: ${colors.bg};">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">
-        <div>
-          <h2 style="font-family: 'Antonio', sans-serif; font-size: 22px; font-weight: 800; margin: 0; color: #000;">${(item.senderNom || "PichFlow Service").toUpperCase()}</h2>
-          <p style="font-size: 12px; margin-top: 5px; color: #444; line-height: 1.4;">
-            ${item.senderAdresse}<br>
-            ${item.senderContact}
-            ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
-            ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
-          </p>
-        </div>
-        <div style="text-align: right;">
-          <h2 style="font-family: 'Antonio', sans-serif; font-size: 22px; font-weight: 800; color: #000; margin: 0; line-height: 1;">FACTURE</h2>
-          <p style="font-weight: 800; margin-top: 10px;">n° ${item.id}</p>
-        </div>
-      </div> 
-
-      <div style="display: flex; justify-content: space-between; margin-bottom: 40px; gap: 13px;">
-        <div style="flex: 1; border: 1.5px solid #e9edf0; padding: 15px; padding-left: 3px; border-radius: 2px;">
-          <p style="font-size: 10px; font-weight: 700;  margin-bottom: 8px; color: #666; ">Dates</p>
-          <p style="font-size: 13px; margin: 0;">Date de création : ${item.date}</p>
-          <p style="font-size: 13px; margin: 5px 0 0 0;">Echéance : ${item.echeance}</p>
-        </div>
-        <div style="flex: 1; border: 1.5px solid #e9edf0; text-align: right; padding: 15px; padding-right: 3px; border-radius: 2px; background: #ffffff55;">
-          <p style="font-size: 10px; font-weight: 700; margin-bottom: 8px; color: #666; ">Destinataire</p>
-          <p style="font-size: 15px; font-weight: 800; margin: 0;">${item.client.toUpperCase()}</p>
-          <p style="font-size: 12px; margin-top: 5px; color: #444;">${item.clientContact}<br>${item.clientAdresse}</p>
-        </div>
-      </div>
-
-      <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr style="background: ${colors.table}; color: #000;">
-            <th style="font-family: 'Antonio', sans-serif; text-align: left; padding: 12px; font-size: 12px; color: #333232; text-transform: uppercase; letter-spacing: 0.5px;">Libellé / Description</th>
-            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 120px;">Prix Unitaire</th>
-            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 60px;">Qté</th>
-            <th style="font-family: 'Antonio', sans-serif; text-align: right; padding: 12px; font-size: 12px; color: #333232; border-left: 1px solid #00000011; text-transform: uppercase; letter-spacing: 0.5px; width: 120px;">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${item.prestations.map((p) => {
-            const verticalDivider = 'border-left: 1px solid #00000011;';
-            return `
-              <tr style="border-bottom: 1px solid #00000011;">
-                <td style="padding: 15px 12px; border: none; vertical-align: top;">
-                  <div style="font-weight: 600; font-size: 13px; color: #000;">${p.description}</div>
-                </td>
-                <td style="padding: 15px 12px; text-align: right; ${verticalDivider} font-size: 13px; vertical-align: top;">${p.prixUnitaire.toLocaleString()} ${item.devise}</td>
-                <td style="padding: 15px 12px; text-align: right; ${verticalDivider} font-size: 13px; vertical-align: top;">${p.quantite}</td>
-                <td style="padding: 15px 12px; text-align: right; font-weight: 600; ${verticalDivider} font-size: 13px; color: #000; vertical-align: top;">${(p.prixUnitaire * p.quantite).toLocaleString()} ${item.devise}</td>
-              </tr>
-            `;
-          }).join('')}
-        </tbody>
-      </table>
-
-      <div style="margin-left: auto; width: 300px; margin-top: 30px; border: 1.5px solid #313030; background: #fff;">
-        <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #eceaea;">
-          <span style="font-size: 13px; color: #666;">Total HT</span>
-          <span style="font-size: 13px; font-weight: 800;">${totalHT.toLocaleString()} ${item.devise}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #eceaea;">
-          <span style="font-size: 13px; color: #666;">TVA</span>
-          <span style="font-size: 13px; font-weight: 800;">${montantTVA.toLocaleString()} ${item.devise}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 15px 12px; background: #313030; color: #fff;">
-          <span style="font-family: 'Antonio', sans-serif; font-size: 14px; font-weight: bold; text-transform: uppercase;">Total TTC </span>
-          <span style="font-size: 18px; font-weight: 900;">${totalTTC.toLocaleString()} ${item.devise}</span>
-        </div>
-      </div>
-
-      <div style="position: absolute; bottom: 40px; left: 50px; width: calc(100% - 100px);">
-        <div style="font-size: 11px; color: #555; line-height: 1.6; margin-bottom: 25px; max-width: 80%;">
-          <p style="margin: 0 0 5px 0;">La facture devra être payée automatiquement ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
-          <p style="margin: 0;">Le règlement par espèce, par chèque et par carte bancaire est accepté.</p>
-        </div>
-        <div style="text-align: center; border-top: 1px solid #e0e0e0; padding-top: 20px;">
-           <p style="font-style: italic; font-size: 13px; color: #000; font-weight: 600; margin: 0;">Merci pour votre confiance !</p>
-        </div>
-      </div>
-    </div>`;
-};
 
 
 const downloadPDF = async (item: Facture, template: string) => {
-  // Nouvelle logique de couleurs (3 modèles)
-  const configs: any = {
-    bleu: { border: '#a5d1f0', bg: '#eef3f7', table: '#a5d1f0' },
-    rose: { border: '#FA5D89', bg: '#FEF7EC', table: '#FA5D89' },
-    violet: { border: '#D09EE7', bg: '#f0fdf4', table: '#D09EE7' },
-    vert: { border: '#10b981', bg: '#f0fdf4', table: '#10b981' },
-    orange: { border: '#eab308', bg: '#fffbeb', table: '#eab308' },
-  gris: { border: '#808283', bg: '#f0fbfc', table: '#808283' },
-  };
-  
-  const colors = configs[template] || configs.bleu;
-
-  const totalHT = calculateTotalHT(item.prestations);
-  const montantTVA = totalHT * (item.tvaRate / 100); 
-  const totalTTC = totalHT + montantTVA;  
+  const colors = templateConfigs[template] || templateConfigs.bleu;
 
   const container = document.createElement('div');
   container.style.cssText = 'position:fixed; left:-9999px; width:800px; background:white;';
   document.body.appendChild(container);
 
-  // Dans downloadPDF (et identiquement dans sendPDFByEmail)
-const layoutToUse = selectedLayout; // Utilise l'état choisi par l'utilisateur
-container.innerHTML = getInvoiceHTML(item, colors, layoutToUse);
+  const layoutToUse = selectedLayout; 
+  container.innerHTML = getInvoiceHTML(item, colors, layoutToUse);
 
   try {
     const canvas = await (window as any).html2canvas(container, { scale: 2, useCORS: true });
@@ -343,28 +185,14 @@ container.innerHTML = getInvoiceHTML(item, colors, layoutToUse);
 const sendPDFByEmail = async (item: Facture, template: string, email: string) => {
   setIsSendingEmail(true);
   
-  // 1. Logique de couleurs (identique à ton downloadPDF)
-  const configs: any = {
-    bleu: { border: '#a5d1f0', bg: '#eef3f7', table: '#a5d1f0' },
-    rose: { border: '#FA5D89', bg: '#FEF7EC', table: '#FA5D89' },
-    violet: { border: '#D09EE7', bg: '#f0fdf4', table: '#D09EE7' }
-  };
-  const colors = configs[template] || configs.bleu;
+  const colors = templateConfigs[template] || templateConfigs.bleu;
 
-  const totalHT = calculateTotalHT(item.prestations);
-  const montantTVA = totalHT * (item.tvaRate / 100); 
-  const totalTTC = totalHT + montantTVA;  
-
-  // 2. Création du container fantôme pour html2canvas
   const container = document.createElement('div');
   container.style.cssText = 'position:fixed; left:-9999px; width:800px; background:white;';
   document.body.appendChild(container);
 
-  // ... (ICI : Copie tout le bloc container.innerHTML de ta fonction downloadPDF) ...
-  
-  // Dans downloadPDF (et identiquement dans sendPDFByEmail)
-const layoutToUse = selectedLayout; // Utilise l'état choisi par l'utilisateur
-container.innerHTML = getInvoiceHTML(item, colors, layoutToUse);
+  const layoutToUse = selectedLayout; 
+  container.innerHTML = getInvoiceHTML(item, colors, layoutToUse);
   
   try {
     const canvas = await (window as any).html2canvas(container, { scale: 2, useCORS: true });
@@ -372,19 +200,17 @@ container.innerHTML = getInvoiceHTML(item, colors, layoutToUse);
     const pdf = new (window as any).jspdf.jsPDF('p', 'mm', 'a4');
     pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
     
-    // Extraction du Base64 (sans le préfixe data:application/pdf;base64,)
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
 
-    // 3. APPEL AU BACKEND
     const res = await sendFactureEmailAction(email, pdfBase64, item.id);
 
     if (res.success) {
-      setShowEmailPopup(false); // On ferme le formulaire de saisie
+      setShowEmailPopup(false); 
       setEmailDestinataire('');
-      setShowEmailSuccess(true); // On ouvre le popup de succès
+      setShowEmailSuccess(true); 
     } else {
       setEmailErrorMessage(res.error || "Le serveur n'a pas pu envoyer l'email.");
-      setShowEmailError(true); // On ouvre le popup d'erreur
+      setShowEmailError(true); 
     }
   } catch (err) {
     setErrorMessage("Erreur lors de la génération du mail");
@@ -638,31 +464,44 @@ container.innerHTML = getInvoiceHTML(item, colors, layoutToUse);
       <p style={{ fontSize: '14px', color: '#666', marginBottom: '15px' }}>Configurez le design avant téléchargement.</p>
 
       {/* --- SECTION 1 : CHOIX DU MODÈLE VISUEL (LAYOUT) --- */}
-      <label style={{ fontSize: '11px', fontWeight: '800', color: '#999', display: 'block', marginBottom: '8px', textAlign: 'left', textTransform: 'uppercase' }}>1. Style de disposition</label>
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
-        <button 
-          onClick={() => setSelectedLayout('classique')}
-          style={{
-            flex: 1, padding: '8px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
-            border: selectedLayout === 'classique' ? '2px solid #0369a1' : '1px solid #ddd',
-            backgroundColor: selectedLayout === 'classique' ? '#e0f2fe' : '#fff',
-            transition: 'all 0.2s'
-          }}
-        >
-          <i className="fa-solid fa-table-cells-large" style={{ marginRight: '8px' }}></i> Classique
-        </button>
-        <button 
-          onClick={() => setSelectedLayout('moderne')}
-          style={{
-            flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
-            border: selectedLayout === 'moderne' ? '2px solid #0369a1' : '1px solid #ddd',
-            backgroundColor: selectedLayout === 'moderne' ? '#e0f2fe' : '#fff',
-            transition: 'all 0.2s'
-          }}
-        >
-          <i className="fa-solid fa-file-invoice" style={{ marginRight: '8px' }}></i> Moderne
-        </button>
-      </div>
+<label style={{ fontSize: '11px', fontWeight: '800', color: '#999', display: 'block', marginBottom: '8px', textAlign: 'left', textTransform: 'uppercase' }}>1. Style de disposition</label>
+<div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+  <button 
+    onClick={() => setSelectedLayout('classique')}
+    style={{
+      flex: 1, padding: '8px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
+      border: selectedLayout === 'classique' ? '2px solid #0369a1' : '1px solid #ddd',
+      backgroundColor: selectedLayout === 'classique' ? '#e0f2fe' : '#fff',
+      transition: 'all 0.2s'
+    }}
+  >
+    <i className="fa-solid fa-table-cells-large" style={{ marginRight: '8px' }}></i> Classique
+  </button>
+  <button 
+    onClick={() => setSelectedLayout('moderne')}
+    style={{
+      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
+      border: selectedLayout === 'moderne' ? '2px solid #0369a1' : '1px solid #ddd',
+      backgroundColor: selectedLayout === 'moderne' ? '#e0f2fe' : '#fff',
+      transition: 'all 0.2s'
+    }}
+  >
+    <i className="fa-solid fa-file-invoice" style={{ marginRight: '8px' }}></i> Moderne
+  </button>
+  
+  {/* LE BOUTON À AJOUTER : */}
+  <button 
+    onClick={() => setSelectedLayout('indy')}
+    style={{
+      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
+      border: selectedLayout === 'indy' ? '2px solid #0369a1' : '1px solid #ddd',
+      backgroundColor: selectedLayout === 'indy' ? '#e0f2fe' : '#fff',
+      transition: 'all 0.2s'
+    }}
+  >
+    <i className="fa-solid fa-signature" style={{ marginRight: '8px' }}></i> Indy
+  </button>
+</div>
 
       {/* --- SECTION 2 : CHOIX DE LA COULEUR --- */}
       <label style={{ fontSize: '11px', fontWeight: '800', color: '#999', display: 'block', marginBottom: '8px', textAlign: 'left', textTransform: 'uppercase' }}>2. Couleur d'accentuation</label>

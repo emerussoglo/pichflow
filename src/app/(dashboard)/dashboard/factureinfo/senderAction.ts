@@ -9,8 +9,10 @@ export async function saveSenderInfoAction(data: {
   adresse: string, 
   contact: string,
   tva_rate: number,
-  ifu_siret: string, // Nouveau
-  autre_num: string  // Nouveau
+  ifu_siret: string,
+  autre_num: string,
+  logo: string,           // Nouveau
+  payment_method: string  // Nouveau
 }) {
   try {
     const cookieStore = await cookies();
@@ -28,18 +30,19 @@ export async function saveSenderInfoAction(data: {
 
     if (existing.rows.length > 0) {
       await db.execute({
-        sql: "UPDATE sender_info SET nom_service = ?, adresse = ?, contact = ?, tva_rate = ?, ifu_siret = ?, autre_num = ? WHERE user_id = ?",
-        args: [data.nom_service, data.adresse, data.contact, data.tva_rate, data.ifu_siret, data.autre_num, userId],
+        sql: "UPDATE sender_info SET nom_service = ?, adresse = ?, contact = ?, tva_rate = ?, ifu_siret = ?, autre_num = ?, logo = ?, payment_method = ? WHERE user_id = ?",
+        args: [data.nom_service, data.adresse, data.contact, data.tva_rate, data.ifu_siret, data.autre_num, data.logo, data.payment_method, userId],
       });
     } else {
       const id = "snd_" + Date.now().toString();
       await db.execute({
-        sql: "INSERT INTO sender_info (id, user_id, nom_service, adresse, contact, tva_rate, ifu_siret, autre_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        args: [id, userId, data.nom_service, data.adresse, data.contact, data.tva_rate, data.ifu_siret, data.autre_num],
+        sql: "INSERT INTO sender_info (id, user_id, nom_service, adresse, contact, tva_rate, ifu_siret, autre_num, logo, payment_method) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        args: [id, userId, data.nom_service, data.adresse, data.contact, data.tva_rate, data.ifu_siret, data.autre_num, data.logo, data.payment_method],
       });
     }
-    return { success: true };
+    return { success: true }; 
   } catch (error) {
+    console.error(error);
     return { success: false, error: "Erreur serveur" };
   }
 }
@@ -52,7 +55,7 @@ export async function getSenderInfo() {
     const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
     
     const res = await db.execute({
-      sql: "SELECT nom_service as nomService, adresse, contact, tva_rate as tvaRate, ifu_siret as ifuSiret, autre_num as autreNum FROM sender_info WHERE user_id = ?",
+      sql: "SELECT nom_service as nomService, adresse, contact, tva_rate as tvaRate, ifu_siret as ifuSiret, autre_num as autreNum, logo, payment_method as paymentMethod FROM sender_info WHERE user_id = ?",
       args: [payload.userId as string],
     });
     return res.rows[0] || null;
