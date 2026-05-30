@@ -261,7 +261,7 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
           <span style="font-size: 18px; font-weight: 900;">${totalTTC.toLocaleString()} ${item.devise}</span>
         </div>
       </div>
- 
+  
       <div style="position: absolute; bottom: 40px; left: 50px; width: calc(100% - 100px);">
         <div style="font-size: 11px; color: #000; line-height: 1.6; margin-bottom: 25px; max-width: 80%;">
           <p style="margin: 0 0 5px 0;">La facture devra être payée automatiquement le jous défini par le prestataire ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
