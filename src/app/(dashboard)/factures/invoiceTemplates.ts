@@ -45,7 +45,7 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
 
   // --- MODÈLE : INDY (Basé sur le modèle Moderne avec Logo) ---
 
-  if (layout === 'indy') {
+  if (layout === 'professionel') {
     return `
     <div style="padding: 50px 40px; font-family: 'Roboto', sans-serif; color: #000; min-height: 1130px; position: relative; background: #fffdf9; box-sizing: border-box;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">

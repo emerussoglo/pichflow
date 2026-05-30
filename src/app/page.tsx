@@ -210,7 +210,7 @@ const formatPrice = (euroAmount: number): string => {
             <p>
               Créez des factures professionnelles en quelques secondes, avec envoi automatique par mail et téléchargements illimités. 
               Suivi automatique des paiements inclus.
-            </p>
+            </p> 
           </div>
           <div className="feature-card active-border">
             <div className="icon-box blue-alt">

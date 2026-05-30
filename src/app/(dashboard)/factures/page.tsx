@@ -463,43 +463,50 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
       <h4>Personnalisez votre facture</h4>
       <p style={{ fontSize: '14px', color: '#666', marginBottom: '15px' }}>Configurez le design avant téléchargement.</p>
 
-      {/* --- SECTION 1 : CHOIX DU MODÈLE VISUEL (LAYOUT) --- */}
+  {/* --- SECTION 1 : CHOIX DU MODÈLE VISUEL (LAYOUT) --- */}
 <label style={{ fontSize: '11px', fontWeight: '800', color: '#999', display: 'block', marginBottom: '8px', textAlign: 'left', textTransform: 'uppercase' }}>1. Style de disposition</label>
 <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+  
+  {/* Bouton CLASSIQUE */}
   <button 
     onClick={() => setSelectedLayout('classique')}
     style={{
-      flex: 1, padding: '8px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
+      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
       border: selectedLayout === 'classique' ? '2px solid #0369a1' : '1px solid #ddd',
       backgroundColor: selectedLayout === 'classique' ? '#e0f2fe' : '#fff',
-      transition: 'all 0.2s'
+      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
     }}
   >
-    <i className="fa-solid fa-table-cells-large" style={{ marginRight: '8px' }}></i> Classique
+    <img src="/img/class.png" alt="Classique" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+    Classique
   </button>
+
+  {/* Bouton MODERNE */}
   <button 
     onClick={() => setSelectedLayout('moderne')}
     style={{
-      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
+      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
       border: selectedLayout === 'moderne' ? '2px solid #0369a1' : '1px solid #ddd',
       backgroundColor: selectedLayout === 'moderne' ? '#e0f2fe' : '#fff',
-      transition: 'all 0.2s'
+      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
     }}
   >
-    <i className="fa-solid fa-file-invoice" style={{ marginRight: '8px' }}></i> Moderne
+    <img src="/img/classique.png" alt="Moderne" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+    Moderne
   </button>
   
-  {/* LE BOUTON À AJOUTER : */}
+  {/* Bouton PROFESSIONEL */}
   <button 
-    onClick={() => setSelectedLayout('indy')}
+    onClick={() => setSelectedLayout('professionel')}
     style={{
-      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
-      border: selectedLayout === 'indy' ? '2px solid #0369a1' : '1px solid #ddd',
-      backgroundColor: selectedLayout === 'indy' ? '#e0f2fe' : '#fff',
-      transition: 'all 0.2s'
+      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
+      border: selectedLayout === 'professionel' ? '2px solid #0369a1' : '1px solid #ddd',
+      backgroundColor: selectedLayout === 'professionel' ? '#e0f2fe' : '#fff',
+      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
     }}
   >
-    <i className="fa-solid fa-signature" style={{ marginRight: '8px' }}></i> Indy
+    <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+    Professionel
   </button>
 </div>
 
