@@ -480,6 +480,19 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
     <img src="/img/class.png" alt="Classique" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
     Classique
   </button>
+   {/* Bouton PROFESSIONEL */}
+  <button 
+    onClick={() => setSelectedLayout('professionel')}
+    style={{
+      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
+      border: selectedLayout === 'professionel' ? '2px solid #0369a1' : '1px solid #ddd',
+      backgroundColor: selectedLayout === 'professionel' ? '#e0f2fe' : '#fff',
+      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
+    }}
+  >
+    <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+    Professionel (avec logo)
+  </button>
 
   {/* Bouton MODERNE */}
   <button 
@@ -495,19 +508,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
     Moderne
   </button>
   
-  {/* Bouton PROFESSIONEL */}
-  <button 
-    onClick={() => setSelectedLayout('professionel')}
-    style={{
-      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
-      border: selectedLayout === 'professionel' ? '2px solid #0369a1' : '1px solid #ddd',
-      backgroundColor: selectedLayout === 'professionel' ? '#e0f2fe' : '#fff',
-      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
-    }}
-  >
-    <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
-    Professionel
-  </button>
+ 
 </div>
 
       {/* --- SECTION 2 : CHOIX DE LA COULEUR --- */}
