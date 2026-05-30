@@ -158,7 +158,7 @@ export default function DashboardLayout({
                 <Link href="/dashboard/factureinfo" className="menu-item" onClick={() => setIsProfileOpen(false)}>
                    <i className="fa-solid fa-file-invoice"></i> Infos de facturation
                 </Link>
-                <Link href="/credits" className="menu-item" onClick={() => setIsProfileOpen(false)}>
+                <Link href="/historique-ai" className="menu-item" onClick={() => setIsProfileOpen(false)}>
                   <i className="fa-solid fa-robot"></i> Automatisation
                 </Link>
                 <Link href="/credits" className="menu-item" onClick={() => setIsProfileOpen(false)}>
