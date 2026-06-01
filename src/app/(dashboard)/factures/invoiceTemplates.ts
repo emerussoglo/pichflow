@@ -13,6 +13,7 @@ export interface Facture {
   senderNom?: string;
   senderAdresse?: string;
   senderContact?: string;
+  senderEmail?: string;
   senderIfu?: string;
   senderAutre?: string;
   senderLogo?: string; // Ajouté pour recevoir l'image/logo de l'utilisateur
@@ -60,7 +61,7 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
             <p style="font-size: 13px; margin-top: 5px; color: #000; line-height: 1.5;">
                ${item.senderAdresse}<br>
             ${item.senderContact}
-            ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
+            ${item.senderEmail ? `<br>${item.senderEmail}` : ''}  ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
             ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
             </p>
           </div>
@@ -139,7 +140,10 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
         <div style="flex: 1;">
           <h2 style="font-family: 'Antonio', sans-serif; font-size: 20px; font-weight: 800; margin: 0; color: #000;">${(item.senderNom || "PichFlow Service").toUpperCase()}</h2>
           <p style="font-size: 13px; margin-top: 8px; color: #000; line-height: 1.5;">
-            ${item.senderAdresse}<br>${item.senderContact}${item.senderIfu ? `<br>IFU : ${item.senderIfu}` : ''}${item.senderAutre ? `<br>${item.senderAutre}` : ''}
+            ${item.senderAdresse}<br>
+            ${item.senderContact}
+            ${item.senderEmail ? `<br>${item.senderEmail}` : ''}  ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
+            ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
           </p>
         </div>
         <div style="flex: 1; text-align: right;">
@@ -180,7 +184,14 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
       </div>
       <div style="position: absolute; bottom: 60px; left: 50px; width: calc(100% - 100px); font-size: 11px; color: #000; border-top: 1px solid #eee; padding-top: 20px;">
         <p>La facture devra être payée automatiquement ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
-        <p style="margin-top: 5px; font-weight: 500;">Méthode de paiement acceptée : Chèque, Espèces, Virement bancaire.</p>
+        ${item.paymentMethod ? `
+          <div style="background: rgba(0,0,0,0.02); border: 1px solid #eaeaea; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+            <strong style="color: #000; display: block; margin-bottom: 2px;">Méthode de paiement :</strong>
+            <span style="color: #000;">${item.paymentMethod}</span>
+          </div>
+        ` : `
+          <p style="margin-top: 5px; font-weight: 500;">Méthode de paiement acceptée : Chèque, Espèces, Virement bancaire.</p>
+        `}
         <div style="display: flex; justify-content: space-between; margin-top: 10px;">
           <span>${item.senderIfu ? `${item.senderIfu}` : ''}</span>
           <span style="font-family:'Antonio'; font-weight:800;">Facture n° ${item.id}</span>
@@ -198,7 +209,7 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
           <p style="font-size: 12px; margin-top: 5px; color: #000; line-height: 1.4;">
             ${item.senderAdresse}<br>
             ${item.senderContact}
-            ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
+            ${item.senderEmail ? `<br>${item.senderEmail}` : ''} ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
             ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
           </p>
         </div>
@@ -265,7 +276,14 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
       <div style="position: absolute; bottom: 40px; left: 50px; width: calc(100% - 100px);">
         <div style="font-size: 11px; color: #000; line-height: 1.6; margin-bottom: 25px; max-width: 80%;">
           <p style="margin: 0 0 5px 0;">La facture devra être payée automatiquement le jous défini par le prestataire ou dans les 30 jours à compter de la réalisation de la prestation ou de la réception de la marchandise.</p>
-          <p style="margin: 0; font-weight: 500;">Méthode de paiement : Espèces, Chèque ou Virement bancaire.</p>
+          ${item.paymentMethod ? `
+          <div style="background: rgba(0,0,0,0.02); border: 1px solid #eaeaea; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+            <strong style="color: #000; display: block; margin-bottom: 2px;">Méthode de paiement :</strong>
+            <span style="color: #000;">${item.paymentMethod}</span>
+          </div>
+        ` : `
+          <p style="margin-top: 5px; font-weight: 500;">Méthode de paiement acceptée : Chèque, Espèces, Virement bancaire.</p>
+        `}
         </div>
         <div style="text-align: center; border-top: 1px solid #e0e0e0; padding-top: 20px;">
            <p style="font-style: italic; font-size: 13px; color: #000; font-weight: 600; margin: 0;">Merci pour votre confiance !</p>

@@ -17,6 +17,7 @@ interface Devis {
   senderNom?: string;
   senderAdresse?: string;
   senderContact?: string;
+  senderEmail?: string;
   senderIfu?: string;
   senderAutre?: string;
   tvaRate?: number;
@@ -129,9 +130,10 @@ const downloadPDF = async (item: Devis, template: string) => {
         <div>
           <h2 style="font-family: 'Antonio', sans-serif; font-size: 22px; font-weight: 800; margin: 0; color: #000;">${(item.senderNom || "PichFlow Service").toUpperCase()}</h2>
           <p style="font-size: 12px; margin-top: 5px; color: #444; line-height: 1.4;">
-            ${item.senderAdresse}<br>${item.senderContact}
-            ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
-            ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
+            ${item.senderAdresse}<br>
+  ${item.senderContact}
+  ${item.senderEmail ? `<br>${item.senderEmail}` : ''}  ${item.senderIfu ? `<br>${item.senderIfu}` : ''}
+  ${item.senderAutre ? `<br>${item.senderAutre}` : ''}
           </p>
         </div>
         <div style="text-align: right;">

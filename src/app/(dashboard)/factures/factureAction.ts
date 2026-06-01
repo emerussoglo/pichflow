@@ -155,13 +155,14 @@ export async function getFacturesAction() {
     if (!userId) return [];
 
     // 1. On récupère le logo et la méthode de paiement de l'utilisateur dans sender_info
-    const senderRes = await db.execute({
-      sql: "SELECT logo, payment_method FROM sender_info WHERE user_id = ?",
-      args: [userId]
-    });
+   const senderRes = await db.execute({
+  sql: "SELECT logo, payment_method, email FROM sender_info WHERE user_id = ?", // Ajout de 'email'
+  args: [userId]
+});
     
     const userLogo = senderRes.rows[0]?.logo ? String(senderRes.rows[0].logo) : "";
     const userPaymentMethod = senderRes.rows[0]?.payment_method ? String(senderRes.rows[0].payment_method) : "";
+    const userEmail = senderRes.rows[0]?.email ? String(senderRes.rows[0].email) : ""; // Récupération
 
     const res = await db.execute({
       sql: "SELECT * FROM factures WHERE user_id = ? ORDER BY id DESC",
@@ -183,6 +184,7 @@ export async function getFacturesAction() {
         senderNom: String(f.sender_nom || "PichFlow Service"),
         senderAdresse: String(f.sender_adresse || ""),
         senderContact: String(f.sender_contact || ""),
+        senderEmail: userEmail,
         senderIfu: String(f.ifu_siret || ""),
         senderAutre: String(f.autre_num || ""),
         senderLogo: userLogo,                  // <--- AJOUTÉ : Reçu dans le composant (ex: item.senderLogo)

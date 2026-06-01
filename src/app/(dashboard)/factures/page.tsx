@@ -25,7 +25,8 @@ interface Facture {
   clientAdresse: string;
   senderNom?: string;
   senderAdresse?: string;
-  senderContact?: string;
+  senderContact?: string; 
+  senderEmail?: string;
   senderIfu?: string;      // Ajouté
   senderAutre?: string;    // Ajouté
   tvaRate: number; 
@@ -344,7 +345,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
               <div className="modal-actions">
                 <button type="button" onClick={()=>setIsModalOpen(false)} className="btn-cancel">Fermer</button>
                 <button type="submit" disabled={isLoading} className="btn-submit">
-                  <i className="fa-solid fa-coins"></i> 5 {isLoading ? "Création..." : "Créer "} 
+                  <i className="fa-solid fa-coins"></i> 5 {isLoading ? "Création..." : "Créer la facture"} 
                 </button>
               </div>
             </form>
@@ -479,7 +480,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
   >
     <img src="/img/class.png" alt="Classique" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
     Classique
-  </button>
+  </button> 
    {/* Bouton PROFESSIONEL */}
   <button 
     onClick={() => setSelectedLayout('professionel')}

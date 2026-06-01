@@ -52,7 +52,7 @@ export async function createDevisAction(formData: any) {
 
     // 2. RÉCUPÉRATION DES INFOS SENDER 
     const senderRes = await db.execute({
-      sql: "SELECT nom_service, adresse, contact, tva_rate, ifu_siret, autre_num FROM sender_info WHERE user_id = ?",
+      sql: "SELECT nom_service, adresse, contact, email, tva_rate, ifu_siret, autre_num FROM sender_info WHERE user_id = ?",
       args: [userId],
     });
     const sender = senderRes.rows[0];
@@ -94,9 +94,9 @@ export async function createDevisAction(formData: any) {
       // Insertion devis
       {
         sql: `INSERT INTO devis (
-          id, user_id, numero_devis, sender_nom, sender_adresse, sender_contact, 
-          client_nom, client_contact, client_adresse, devise, date_emission, date_echeance, tva_rate
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  id, user_id, numero_devis, sender_nom, sender_adresse, sender_contact, sender_email,
+  client_nom, client_contact, client_adresse, devise, date_emission, date_echeance, tva_rate
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         args: [
           devisUuid, 
           userId, 
@@ -104,6 +104,7 @@ export async function createDevisAction(formData: any) {
           sender?.nom_service || "Nom du Service", 
           sender?.adresse || "", 
           sender?.contact || "",
+          sender?.email || "",
           formData.client, 
           formData.clientContact, 
           formData.clientAdresse,
@@ -141,9 +142,9 @@ export async function getDevisAction() {
     if (!userId) return [];
 
     const senderRes = await db.execute({
-      sql: "SELECT ifu_siret, autre_num FROM sender_info WHERE user_id = ?",
-      args: [userId]
-    });
+  sql: "SELECT ifu_siret, autre_num, email FROM sender_info WHERE user_id = ?",
+  args: [userId]
+});
     const profile = senderRes.rows[0];
 
     const res = await db.execute({
@@ -166,6 +167,7 @@ export async function getDevisAction() {
         senderNom: d.sender_nom ? String(d.sender_nom) : "PichFlow Service",
         senderAdresse: d.sender_adresse ? String(d.sender_adresse) : "",
         senderContact: d.sender_contact ? String(d.sender_contact) : "",
+        senderEmail: profile?.email || "",
         senderIfu: profile?.ifu_siret || "",
         senderAutre: profile?.autre_num || "",
         tvaRate: Number(d.tva_rate || 0),

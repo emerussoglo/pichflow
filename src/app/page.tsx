@@ -302,7 +302,7 @@ const formatPrice = (euroAmount: number): string => {
 </li>
 
             </ul>
-          </div>
+          </div> 
           <div className="showcase-visual">
             <div className="circle-bg"></div>
             <img
