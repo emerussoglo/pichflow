@@ -1183,7 +1183,7 @@ flex: 0 1 320px; /* Ne grandit pas (0), peut rétrécir (1), base de 320px */
 
 .trust-card {
   background: var(--white);
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ebeef1;
   padding: 12px 20px;
   border-radius: 12px;
   min-width: 120px;

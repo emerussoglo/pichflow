@@ -8,9 +8,9 @@ export async function POST(req: Request) {
 
   if (
     !receivedSecret ||
-    !expectedSecret ||
+    !expectedSecret || 
     receivedSecret !== expectedSecret
-  ) {
+  ) { 
     console.error("❌ Secret webhook invalide");
     // On retourne 200 quand même pour éviter les retries inutiles
     return NextResponse.json({ received: true }, { status: 200 });

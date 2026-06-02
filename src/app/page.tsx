@@ -642,44 +642,55 @@ const formatPrice = (euroAmount: number): string => {
   <div className="pricing-trust reveal delay-2">
     <p>Recharges sécurisées via nos partenaires</p>
     <div className="trust-badges">
-      <div className="trust-card">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/9/98/Visa_Inc._logo_%282005%E2%80%932014%29.svg"
-          alt="Visa"
-          style={{ height: "26px", marginRight: "10px" }}
-        />
+
+
+       <div className="trust-card" style={{padding: "5px 20px"}}>
+        <img src="/img/Orange.png" alt="Orange" style={{ height: "48px" }} />
       </div>
-      <div className="trust-card">
-        <img src="/img/mastercard.jpg" alt="Mastercard" style={{ height: "30px" }} />
-      </div>
-      <div className="trust-card">
-        <img src="/img/Orange.png" alt="Orange" style={{ height: "30px" }} />
-      </div>
-      <div className="trust-card">
+      <div className="trust-card" style={{padding: "2px 20px"}}>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/2/29/MTN-Logo.png"
           alt="MTN"
-          style={{ height: "26px" }}
+          style={{ height: "54px" }}
         />
       </div>
-      <div className="trust-card">
+      <div className="trust-card" style={{padding: "0px 20px"}}>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Moov_Money_Flooz.png"
           alt="Moov"
-          style={{ height: "26px" }}
+          style={{ height: "54px" }}
         />
       </div>
-      <div className="trust-card">
-        <img src="/img/celtiis.jpg" alt="Celtiis" style={{ height: "30px" }} />
+      <div className="trust-card" style={{padding: "5px 20px"}}>
+        <img src="/img/celtiis.jpg" alt="Celtiis" style={{ height: "45px" }} />
+      </div>
+
+      <div className="trust-card" style={{padding: "10px 20px"}}>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/9/98/Visa_Inc._logo_%282005%E2%80%932014%29.svg"
+          alt="Visa"
+          style={{ height: "40px"}}
+        />
+      </div>
+      <div className="trust-card" style={{padding: "5px 20px"}}>
+        <img src="/img/mastercard.jpg" alt="Mastercard" style={{ height: "50px" }} />
       </div>
       <div className="trust-card">
-        <img src="/img/free-money.png" alt="Free-money" style={{ height: "30px" }} />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Verve_Image.png" alt="Verve" style={{ height: "30px" }} />
       </div>
-      <div className="trust-card">
-        <img src="/img/wave.png" alt="Wave" style={{ height: "30px" }} />
+     
+      
+      <div className="trust-card" style={{padding: "5px 20px"}}>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Airtel_Africa_logo.svg" alt="Airtel" style={{ height: "45px" }} />
       </div>
-      <div className="trust-card">
-        <img src="/img/mixx.svg" alt="Mixx" style={{ height: "30px" }} /> 
+      <div className="trust-card" style={{padding: "5px 20px"}}>
+        <img src="/img/coris.webp" alt="Coris" style={{ height: "45px" }} />
+      </div>
+      <div className="trust-card" style={{padding: "5px 20px"}}>
+        <img src="/img/wave.png" alt="Wave" style={{ height: "45px" }} />
+      </div>
+      <div className="trust-card" style={{padding: "5px 20px"}}>
+        <img src="/img/mixx.svg" alt="Mixx" style={{ height: "45px" }} /> 
       </div>
     </div>
   </div>

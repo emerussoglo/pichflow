@@ -255,7 +255,7 @@ export default function BuyCreditsPage() {
       openKkiapayWidget({
         amount: pack.price,
         api_key: publicKey,
-        sandbox: true,
+        // sandbox: true,
         email: userEmail,
         partnerId: data.transactionId,
         name: pack.name,

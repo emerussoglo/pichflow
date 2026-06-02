@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const { email, credits, amount } = await req.json();
 
-    // Vérification que le pack est valide (sécurité)
+    // Vérification que le pack est valide (sécurité) 
     const validPack = PACKS.find(
       (p) => p.credits === credits && p.price === amount
     );

@@ -2063,7 +2063,7 @@ width: fit-content;
 /* Conteneur du message */
 .download-popup-content {
   background: white;
-  padding: 30px;
+  padding: 20px;
   border-radius: 16px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   text-align: center;
@@ -2123,19 +2123,19 @@ width: fit-content;
 .download-popup-content h4 {
   margin: 0 0 10px 0;
   color: #111827;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
 .download-popup-content p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #6b7280;
 }
 
 /* Bouton de confirmation (OK) */
 .download-popup-btn {
-  margin-top: 25px;
+  margin-top: 20x;
   padding: 12px 24px;
   background: #1f2937;
   color: white;
@@ -2682,7 +2682,7 @@ width: fit-content;
     /* color:#0F172A; */
     font-size: 15px;
     width:100%;
-    margin: auto;
+    margin: auto; 
     font-weight: 500;
     border-radius: 12px;
 }

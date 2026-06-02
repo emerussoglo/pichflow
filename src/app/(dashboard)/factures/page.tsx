@@ -350,7 +350,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
               </div>
             </form>
           </div>
-        </div>
+        </div> 
       )} 
 
       <div className="table-toolbar">
@@ -452,7 +452,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
       {/* --- POPUP DE TÉLÉCHARGEMENT AJOUTÉ ICI --- */}
     {showDownloadPopup && (
   <div className="download-popup-overlay">
-    <div className="download-popup-content" style={{ maxWidth: '400px' }}>
+    <div className="download-popup-content" style={{ maxWidth: '500px' }}>
       <button className="download-popup-close" onClick={() => setShowDownloadPopup(false)}>
         <i className="fa-solid fa-xmark"></i>
       </button>
@@ -462,8 +462,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
       </div>
       
       <h4>Personnalisez votre facture</h4>
-      <p style={{ fontSize: '14px', color: '#666', marginBottom: '15px' }}>Configurez le design avant téléchargement.</p>
-
+      
   {/* --- SECTION 1 : CHOIX DU MODÈLE VISUEL (LAYOUT) --- */}
 <label style={{ fontSize: '11px', fontWeight: '800', color: '#999', display: 'block', marginBottom: '8px', textAlign: 'left', textTransform: 'uppercase' }}>1. Style de disposition</label>
 <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
@@ -472,26 +471,26 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
   <button 
     onClick={() => setSelectedLayout('classique')}
     style={{
-      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
+      flex: 1, padding: '5px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
       border: selectedLayout === 'classique' ? '2px solid #0369a1' : '1px solid #ddd',
       backgroundColor: selectedLayout === 'classique' ? '#e0f2fe' : '#fff',
-      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
+      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0px'
     }}
   >
-    <img src="/img/class.png" alt="Classique" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+    <img src="/img/class.png" alt="Classique" style={{ width: '100px', height: '110px', objectFit: 'contain' }} />
     Classique
   </button> 
    {/* Bouton PROFESSIONEL */}
   <button 
     onClick={() => setSelectedLayout('professionel')}
     style={{
-      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
+      flex: 1, padding: '5px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
       border: selectedLayout === 'professionel' ? '2px solid #0369a1' : '1px solid #ddd',
       backgroundColor: selectedLayout === 'professionel' ? '#e0f2fe' : '#fff',
-      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
+      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0px'
     }}
   >
-    <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+    <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '100px', height: '110px', objectFit: 'contain' }} />
     Professionel (avec logo)
   </button>
 
@@ -499,13 +498,13 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
   <button 
     onClick={() => setSelectedLayout('moderne')}
     style={{
-      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
+      flex: 1, padding: '5px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
       border: selectedLayout === 'moderne' ? '2px solid #0369a1' : '1px solid #ddd',
       backgroundColor: selectedLayout === 'moderne' ? '#e0f2fe' : '#fff',
-      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px'
+      transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0px'
     }}
   >
-    <img src="/img/classique.png" alt="Moderne" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+    <img src="/img/classique.png" alt="Moderne" style={{ width: '100px', height: '110px', objectFit: 'contain' }} />
     Moderne
   </button>
   
@@ -514,7 +513,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
 
       {/* --- SECTION 2 : CHOIX DE LA COULEUR --- */}
       <label style={{ fontSize: '11px', fontWeight: '800', color: '#999', display: 'block', marginBottom: '8px', textAlign: 'left', textTransform: 'uppercase' }}>2. Couleur d'accentuation</label>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
         {/* MODÈLE BLEU */}
         <div 
           onClick={() => setSelectedTemplate('bleu')}
@@ -525,7 +524,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
             transition: 'all 0.2s ease', textAlign: 'center'
           }}
         >
-          <div style={{ width: '40px', height: '40px', backgroundColor: '#a5d1f0', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
+          <div style={{ width: '30px', height: '30px', backgroundColor: '#a5d1f0', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
           <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333' }}>Bleu</span>
         </div>
 
@@ -539,7 +538,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
             transition: 'all 0.2s ease', textAlign: 'center'
           }}
         >
-          <div style={{ width: '40px', height: '40px', backgroundColor: '#FA5D89', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
+          <div style={{ width: '30px', height: '30px', backgroundColor: '#FA5D89', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
           <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333' }}>Rose</span>
         </div>
 
@@ -553,7 +552,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
             transition: 'all 0.2s ease', textAlign: 'center'
           }}
         >
-          <div style={{ width: '40px', height: '40px', backgroundColor: '#D09EE7', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
+          <div style={{ width: '30px', height: '30px', backgroundColor: '#D09EE7', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
           <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333' }}>Violet</span>
         </div>
 
@@ -567,7 +566,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
     transition: 'all 0.2s ease', textAlign: 'center'
   }}
 >
-  <div style={{ width: '40px', height: '40px', backgroundColor: '#10b981', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
+  <div style={{ width: '30px', height: '30px', backgroundColor: '#10b981', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
   <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333' }}>Vert</span>
 </div>
 
@@ -581,7 +580,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
     transition: 'all 0.2s ease', textAlign: 'center'
   }}
 >
-  <div style={{ width: '40px', height: '40px', backgroundColor: '#f59e0b', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
+  <div style={{ width: '30px', height: '30px', backgroundColor: '#f59e0b', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
   <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333' }}>Orange</span>
 </div>
 
@@ -598,7 +597,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
     transition: 'all 0.2s ease', textAlign: 'center'
   }}
 >
-  <div style={{ width: '40px', height: '40px', backgroundColor: '#808283', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
+  <div style={{ width: '30px', height: '30px', backgroundColor: '#808283', borderRadius: '50px', marginBottom: '8px', border: '1px solid #ddd' }}></div>
   <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333' }}>Gris</span>
 </div>
       </div>
