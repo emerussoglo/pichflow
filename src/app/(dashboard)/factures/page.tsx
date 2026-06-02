@@ -465,7 +465,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
       
   {/* --- SECTION 1 : CHOIX DU MODÈLE VISUEL (LAYOUT) --- */}
 <label style={{ fontSize: '11px', fontWeight: '800', color: '#999', display: 'block', marginBottom: '8px', textAlign: 'left', textTransform: 'uppercase' }}>1. Style de disposition</label>
-<div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+<div style={{ display: 'flex', gap: '10px', marginBottom: '15px', flexWrap: "wrap", marginRight: "20px" }}>
   
   {/* Bouton CLASSIQUE */}
   <button 
@@ -477,7 +477,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
       transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0px'
     }}
   >
-    <img src="/img/class.png" alt="Classique" style={{ width: '100px', height: '110px', objectFit: 'contain' }} />
+    <img src="/img/class.png" alt="Classique" style={{ width: '90px', height: '90px', objectFit: 'contain' }} />
     Classique
   </button> 
    {/* Bouton PROFESSIONEL */}
@@ -490,7 +490,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
       transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0px'
     }}
   >
-    <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '100px', height: '110px', objectFit: 'contain' }} />
+    <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '90px', height: '90px', objectFit: 'contain' }} />
     Professionel (avec logo)
   </button>
 
@@ -504,7 +504,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
       transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0px'
     }}
   >
-    <img src="/img/classique.png" alt="Moderne" style={{ width: '100px', height: '110px', objectFit: 'contain' }} />
+    <img src="/img/classique.png" alt="Moderne" style={{ width: '90px', height: '90px', objectFit: 'contain' }} />
     Moderne
   </button>
   
