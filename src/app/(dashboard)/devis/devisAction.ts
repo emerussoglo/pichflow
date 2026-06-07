@@ -214,7 +214,7 @@ export async function sendFactureEmailAction(emailDestinataire: string, pdfBase6
       },
     });
 
-    const mailOptions = {
+    const mailOptions = { 
       from: `"Pichflow" <${process.env.GMAIL_USER}>`,
       to: emailDestinataire,
       subject: `Votre Devis ${numeroDevis}`,
