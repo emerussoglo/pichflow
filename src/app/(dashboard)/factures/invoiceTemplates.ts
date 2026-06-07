@@ -44,9 +44,7 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
   const montantTVA = totalHT * (item.tvaRate / 100); 
   const totalTTC = totalHT + montantTVA;
 
-  // --- MODÈLE : INDY (Basé sur le modèle Moderne avec Logo) ---
-
-  if (layout === 'professionel') {
+if (layout === 'professionel') {
     return `
     <div style="padding: 50px 40px; font-family: 'Roboto', sans-serif; color: #000; min-height: 1130px; position: relative; background: #fffdf9; box-sizing: border-box;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">
@@ -133,6 +131,7 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
   }
 
   // --- MODÈLE : MODERNE ---
+  
   if (layout === 'moderne') {
     return `
     <div style="padding: 50px 40px; font-family: 'Roboto', sans-serif; color: #000;  min-height: 1130px; position: relative; background: ${colors.bg};">
@@ -200,6 +199,80 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
     </div>`;
   }
 
+
+else if (layout === 'minimaliste') {
+    return `
+    <div style="padding: 50px; font-family: 'Helvetica', sans-serif; color: #000; min-height: 1130px; position: relative; background: #fff; box-sizing: border-box;">
+      
+      <!-- En-tête : Logo et Informations -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 50px;">
+        <div style="display: flex; align-items: center; gap: 20px;">
+          ${item.senderLogo ? `
+            <img src="${item.senderLogo}" alt="Logo" style="width: 80px; height: 80px; object-fit: contain;" />
+          ` : ''}
+          <div>
+            <h2 style="font-size: 20px; font-weight: bold; margin: 0;">${(item.senderNom || "SERVICE").toUpperCase()}</h2>
+            <p style="font-size: 12px; margin-top: 5px; color: #666; line-height: 1.4;">
+              ${item.senderAdresse || ""}<br>
+              ${item.senderContact || ""}<br>
+              ${item.senderEmail || ""}
+            </p>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <h1 style="font-size: 32px; font-weight: 300; margin: 0; color: ${colors.border};">FACTURE</h1>
+          <p style="font-size: 14px; margin: 5px 0;">Facture n° ${item.id}</p>
+          <p style="font-size: 12px; color: #666;">Date : ${item.date}</p>
+        </div>
+      </div>
+
+      <!-- Informations Client -->
+      <div style="margin-bottom: 40px; padding: 20px; background: #f9f9f9; border-left: 4px solid ${colors.border};">
+        <p style="font-size: 11px; font-weight: bold; margin: 0 0 5px 0; color: #888;">CLIENT</p>
+        <h2 style="font-size: 18px; margin: 0;">${item.client.toUpperCase()}</h2>
+        <p style="font-size: 13px; margin: 5px 0 0 0;">${item.clientAdresse} <br> ${item.clientContact}</p>
+      </div>
+
+      <!-- Tableau -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
+        <thead>
+          <tr style="border-bottom: 2px solid #000; text-transform: uppercase; font-size: 12px;">
+            <th style="text-align: left; padding: 10px 5px;">Description</th>
+            <th style="text-align: center; padding: 10px 5px;">Qté</th>
+            <th style="text-align: right; padding: 10px 5px;">Prix Unitaire</th>
+            <th style="text-align: right; padding: 10px 5px;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${item.prestations.map((p) => `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 15px 5px; font-size: 13px;">${p.description}</td>
+              <td style="padding: 15px 5px; text-align: center; font-size: 13px;">${p.quantite}</td>
+              <td style="padding: 15px 5px; text-align: right; font-size: 13px;">${p.prixUnitaire.toLocaleString()} ${item.devise}</td>
+              <td style="padding: 15px 5px; text-align: right; font-size: 13px; font-weight: bold;">${(p.prixUnitaire * p.quantite).toLocaleString()} ${item.devise}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+
+      <!-- Totaux et Paiement -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="width: 50%; font-size: 12px;">
+          <p style="font-weight: bold; margin-bottom: 5px;">Méthode de paiement :</p>
+          <p style="color: #555;">${item.paymentMethod || "Virement bancaire"}</p>
+          <p style="margin-top: 20px; font-size: 11px; color: #888;">Échéance : <strong>${item.echeance}</strong></p>
+        </div>
+        <div style="width: 40%;">
+          <div style="display: flex; justify-content: space-between; padding: 5px 0;"><span>Total HT</span><span>${totalHT.toLocaleString()} ${item.devise}</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #ccc;"><span>TVA (${item.tvaRate}%)</span><span>${montantTVA.toLocaleString()} ${item.devise}</span></div>
+          <div style="background: ${colors.border}; color: #fff; padding: 15px; margin-top: 10px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
+            <span>TOTAL TTC</span><span>${totalTTC.toLocaleString()} ${item.devise}</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  
   // --- MODÈLE PAR DÉFAUT : CLASSIQUE ---
   return `
     <div style="padding: 50px; font-family: 'Roboto', sans-serif; color: #000; border-left: 15px solid ${colors.border}; min-height: 1130px; position: relative; background: ${colors.bg};">
@@ -230,7 +303,7 @@ export const getInvoiceHTML = (item: Facture, colors: { border: string; bg: stri
           <p style="font-size: 15px; font-weight: 800; margin: 0;">${item.client.toUpperCase()}</p>
           <p style="font-size: 12px; margin-top: 5px; color: #000;">${item.clientContact}<br>${item.clientAdresse}</p>
         </div>
-      </div>
+      </div> 
 
       <table style="width: 100%; border-collapse: collapse;">
         <thead>

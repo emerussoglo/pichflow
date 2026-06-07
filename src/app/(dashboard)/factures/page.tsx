@@ -491,7 +491,7 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
     }}
   >
     <img src="/img/aveclogo.png" alt="Professionel" style={{ width: '90px', height: '90px', objectFit: 'contain' }} />
-    Professionel (avec logo)
+    Professionel (avec logo) 
   </button>
 
   {/* Bouton MODERNE */}
@@ -507,6 +507,20 @@ const sendPDFByEmail = async (item: Facture, template: string, email: string) =>
     <img src="/img/classique.png" alt="Moderne" style={{ width: '90px', height: '90px', objectFit: 'contain' }} />
     Moderne
   </button>
+
+
+<button 
+  onClick={() => setSelectedLayout('minimaliste')}
+  style={{
+    flex: 1, padding: '5px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
+    border: selectedLayout === 'minimaliste' ? '2px solid #eab308' : '1px solid #ddd',
+    backgroundColor: selectedLayout === 'minimaliste' ? '#fffbeb' : '#fff',
+    transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0px'
+  }}
+>
+  <img src="/img/aveclogo.png" alt="Minimaliste" style={{ width: '90px', height: '90px', objectFit: 'contain' }} />
+  Minimaliste
+</button>
   
  
 </div>

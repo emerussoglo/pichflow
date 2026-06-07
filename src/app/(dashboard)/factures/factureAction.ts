@@ -245,10 +245,20 @@ export async function deleteFactureAction(dbId: string) {
 /**
  * ENVOI PAR EMAIL
  */
+/**
+ * ENVOI PAR EMAIL
+ */
 export async function sendFactureEmailAction(emailDestinataire: string, pdfBase64: string, numeroFacture: string) {
   try {
     const userId = await getAuthUserId();
     if (!userId) return { success: false, error: "Non connecté" };
+
+    // Récupération des infos expéditeur pour personnaliser le mail
+    const senderRes = await db.execute({
+      sql: "SELECT nom_service, adresse, contact, autre_num, email FROM sender_info WHERE user_id = ?",
+      args: [userId],
+    });
+    const sender = senderRes.rows[0];
 
     const transporter = nodemailer.createTransport({
       service: "gmail", 
@@ -259,10 +269,33 @@ export async function sendFactureEmailAction(emailDestinataire: string, pdfBase6
     });
 
     const mailOptions = {
-      from: `"Pichflow" <${process.env.GMAIL_USER}>`,
+      from: `"${sender?.nom_service || 'PichFlow'}" <${process.env.GMAIL_USER}>`,
       to: emailDestinataire,
-      subject: `Votre Facture ${numeroFacture}`,
-      text: `Veuillez trouver ci-joint votre facture ${numeroFacture}.\n\nCordialement,\nL'équipe Pichflow.`,
+      subject: `Facture ${numeroFacture} - ${sender?.nom_service || 'PichFlow'}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <h2 style="color: #000;">Bonjour,</h2>
+          <p>Vous trouverez ci-joint votre facture <strong>n°${numeroFacture}</strong> émise par <strong>${sender?.nom_service || 'notre service'}</strong>.</p>
+          
+          <div style="background: #f4f4f4; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Informations de facturation :</h3>
+            <p style="margin: 5px 0;"><strong>${sender?.nom_service || ""}</strong><br>
+            ${sender?.adresse || ""}<br>
+            Contact : ${sender?.contact || ""}<br>
+            ${sender?.autre_num ? `Autre : ${sender.autre_num}<br>` : ""}
+            Email : ${sender?.email || ""}</p>
+          </div>
+
+          <p>Si vous avez des questions concernant cette facture, n'hésitez pas à nous contacter en cliquant sur le bouton ci-dessous :</p>
+          
+          <a href="mailto:${sender?.email || process.env.GMAIL_USER}?subject=Question concernant la facture ${numeroFacture}" 
+             style="background-color: #0369a1; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+             Contactez-nous
+          </a>
+
+          <p style="margin-top: 30px;">Cordialement,<br><strong>L'équipe ${sender?.nom_service || 'PichFlow'}</strong></p>
+        </div>
+      `,
       attachments: [
         {
           filename: `Facture_${numeroFacture}.pdf`,
