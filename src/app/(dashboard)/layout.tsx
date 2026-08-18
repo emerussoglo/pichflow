@@ -80,14 +80,14 @@ export default function DashboardLayout({
     { name: "Clients", path: "/clients", icon: "fa-user-group" },
     { name: "Devis", path: "/devis", icon: "fas fa-receipt" },
     { name: "Factures", path: "/factures", icon: "fa-file-invoice-dollar" },
-    { name: "Marketing ", path: "/contenu-ia", icon: "fa-handshake" },
-    { name: "Copywriting ", path: "/copywriting", icon: "fa-lightbulb" },
+    // { name: "Marketing ", path: "/contenu-ia", icon: "fa-handshake" },
+    // { name: "Copywriting ", path: "/copywriting", icon: "fa-lightbulb" },
     { name: "Rapports ", path: "/rapports", icon: "fa-chart-pie" },
     { name: "Paramètres ", path: "/parametres", icon: "fa-gear" },
   ];
 
-  const sidebarPrimaryItems = allMenuItems.slice(0, 6);
-  const sidebarSecondaryItems = allMenuItems.slice(6);
+  const sidebarPrimaryItems = allMenuItems.slice(0, 4);
+  const sidebarSecondaryItems = allMenuItems.slice(4);
   const mobileMenuItems = allMenuItems.filter((item) => item.name !== "Rapports " && item.name !== "Paramètres ");
 
   const activeItem = allMenuItems.find((item) => item.path === pathname);

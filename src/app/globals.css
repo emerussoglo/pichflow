@@ -4,6 +4,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
 
 
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+
 :root {
   --primary: #2532eb; 
   --secondary: #1e3a8a;
@@ -17,13 +20,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
 }
 body {
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
+  font-family: "Plus Jakarta Sans", sans-serif;
   color: #0f172a;
   background-color: var(--white);
   overflow-x: hidden;
@@ -103,7 +108,7 @@ body {
   font-weight: 900;
   font-size: 1.5rem;
   color: #0f172a;
-  font-family: "Poppins", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   letter-spacing: 0px;
 
   white-space: nowrap;           
@@ -285,20 +290,6 @@ body {
   pointer-events: none; 
 }
 
-/* Lueurs bleues à gauche */
-
-/* .hero::before {
-  background: var(--sup-primary, #2563eb);
-  top: 25%;
-  left: -10%;
-} */
-
-/* Lueurs oranges à droite */
-/* .hero::after {
-  background: var(--accent, #ff7a30);
-  bottom: 30%;
-  right: -10%;
-} */
 
 /* Optionnel : Une troisième lueur centrale très légère */
 .hero-btns::before {
@@ -350,7 +341,7 @@ body {
   font-size: 4.8rem;
   line-height: 72px;
   font-weight: 800;
-    font-family: "Roboto", sans-serif;
+    font-family: "Plus Jakarta Sans", sans-serif;
   color: #1e293b;
   margin-bottom: 1rem;
   margin-top: 2px;
@@ -595,7 +586,7 @@ body {
     width: 100%;
     font-size: 44px;
     font-weight: 900;
-    font-family: 'Poppins', serif;
+    font-family: 'Plus Jakarta Sans', serif;
       font-style: initial; 
   }
   .hero .delay-2 {
@@ -777,7 +768,7 @@ body {
   color: var(--primary);
   /* display: block; */
   /* font-style: italic; */
-  font-family: 'Poppins', serif;
+  font-family: 'Plus Jakarta Sans', serif;
 }
 
 .features-header p {
@@ -1023,7 +1014,7 @@ flex: 0 1 320px; /* Ne grandit pas (0), peut rétrécir (1), base de 320px */
 .pricing-header h2 span {
   color: var(--primary);
    /* font-style: italic; */
-  font-family: 'Poppins', serif;
+  font-family: 'Plus Jakarta Sans', serif;
 }
 
 .pricing-grid {
@@ -1782,7 +1773,7 @@ color: #fff;
 html,
 body {
   width: 100%;
-  font-family: "Poppins", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   color: var(--text-main);
 }
 
@@ -2310,7 +2301,7 @@ color: red;}
 .factures-container .table-toolbar .btn-new {
   font-size: 18px;
   width: fit-content;
-  font-family: "Poppins", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 
@@ -2365,7 +2356,7 @@ color: red;}
 .showcase-text h2 span {
   color: var(--primary);
    /* font-style: italic; */
-  font-family: 'Poppins', serif;
+  font-family: 'Plus Jakarta Sans', serif;
 }
 
 .showcase-text p {
@@ -2617,7 +2608,7 @@ color: red;}
 .testimonials .features-header h3 span {
   color: #2563eb;
    /* font-style: italic; */
-  font-family: 'Poppins', serif;
+  font-family: 'Plus Jakarta Sans', serif;
 }
 
 .testimonials-container {
@@ -2959,7 +2950,7 @@ color: red;}
 .faq-header h2 span {
   /* font-style: italic; */
   color: var(--primary);
-  font-family: 'Poppins', serif;
+  font-family: 'Plus Jakarta Sans', serif;
 }
 
 .faq-list {
@@ -3197,7 +3188,7 @@ color: red;}
 .integration-left h2 span {
   color: #2532eb; /* Ou ta couleur principale */
   /* font-style: italic; */
-  font-family: 'Poppins', serif;
+  font-family: 'Plus Jakarta Sans', serif;
 }
 
 .network-list { 
@@ -3499,7 +3490,7 @@ color: red;}
 }
 
 .video-header h2 {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: clamp(1.8rem, 5vw, 2.8rem); /* Taille de texte fluide */
   margin-bottom: 15px;
   font-weight: 700;
@@ -3592,7 +3583,7 @@ color: red;}
 }
 
 .pich-title {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: #000;
@@ -3790,7 +3781,7 @@ color: red;}
   min-height: 100-vh;
   background-color: #f8fafc;
   padding: 40px 20px;
-   font-family: "Poppins", sans-serif;
+   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .verify-container {
@@ -3840,7 +3831,7 @@ color: red;}
 
 .btn-verify {
   background: #2532eb;
-  font-family: "Poppins", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   color: white;
   border: none;
   padding: 0 25px;
@@ -3893,7 +3884,7 @@ color: red;}
    ========================================================================== */
 
 .pichflow-billing-landing {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   color: #000;
   background-color: var(--white);
   overflow-x: hidden;
@@ -4325,7 +4316,7 @@ color: red;}
   background-color: #fff; /* zinc-950 */
   padding: 1rem;
   color: #ffffff; 
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .forgot-password-card {
