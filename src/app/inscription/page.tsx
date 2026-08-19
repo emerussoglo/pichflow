@@ -192,7 +192,7 @@ export default function Inscription() {
                 {isLoading ? <><i className="fa-solid fa-circle-notch fa-spin"></i> Création du compte...</> : <>Créer mon compte <i className="fa-solid fa-arrow-right"></i></>}
               </button>
             </form>
-<p className="auth-switch">
+            <p className="auth-switch">
               En vous inscrivant, vous acceptez nos <Link href="/tos">CGU</Link> et notre <Link href="/privacy">Politique de confidentialité</Link>
             </p>
             <p className="auth-switch">Déjà un compte ? <Link href="/connexion">Se connecter</Link></p>
@@ -202,11 +202,11 @@ export default function Inscription() {
         <div className="auth-info-side">
           <div className="info-content">
             <div className="info-icon-box"><i className="fa-solid fa-bolt-lightning"></i></div>
-            <h2>Marketing IA + Facturation</h2>
-            <p>Générez du contenu percutant et gérez vos finances en toute simplicité.</p>
+            <h2>Gestion financière & Facturation</h2>
+            <p>Pilotez votre activité et gérez vos finances en toute simplicité.</p>
             <ul className="info-list">
-              <li><i className="fa-solid fa-circle-check"></i> Articles SEO et posts réseaux sociaux</li>
-              <li><i className="fa-solid fa-circle-check"></i> Copywriting (AIDA, PAS)</li>
+              <li><i className="fa-solid fa-circle-check"></i> Devis et factures illimités</li>
+              <li><i className="fa-solid fa-circle-check"></i> Suivi comptable automatisé</li>
               <li><i className="fa-solid fa-circle-check"></i> 15 crédits offerts à l'inscription</li>
             </ul>
           </div>

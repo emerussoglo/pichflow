@@ -25,43 +25,29 @@ export default function TOSPage() {
         <section>
           <h2>2. Description des services</h2>
           <p>
-            PichFlow est une plateforme SaaS basée sur l’Intelligence
-            Artificielle, proposant :
+            PichFlow est une plateforme de gestion et de facturation, proposant :
             <ul>
-              <li>des outils de marketing et de copywriting automatisés</li>
               <li>
-                des outils de facturation et de gestion financière simplifiée
+                des outils de facturation, de création de devis et de gestion financière simplifiée
               </li>
               <li>
-                des fonctionnalités d’aide à la productivité et à la création de
-                contenu
+                des fonctionnalités d’aide à la productivité, au suivi de trésorerie et à la gestion des clients
               </li>
             </ul>
           </p>
         </section>
 
         <section>
-          <h2>3. Utilisation de l'Intelligence Artificielle</h2>
+          <h2>3. Utilisation de la plateforme</h2>
           <p>
-            PichFlow utilise des modèles d’intelligence artificielle pour
-            générer du contenu automatiquement. L’utilisateur reconnaît et
-            accepte que :
+            L’utilisateur s’engage à utiliser la plateforme conformément aux lois en vigueur et reconnaît que :
           </p>
           <ul>
             <li>
-              le contenu généré peut contenir des approximations ou erreurs
+              il est seul responsable de l'exactitude des données financières et des informations saisies (montants, clients, taxes)
             </li>
             <li>
-              il est seul responsable de la vérification, de l’adaptation et de
-              l’utilisation du contenu généré
-            </li>
-            <li>
-              PichFlow ne garantit pas l’adéquation du contenu à un usage
-              spécifique
-            </li>
-            <li>
-              l’utilisateur conserve les droits sur les contenus générés, sous
-              réserve du respect des lois applicables
+              PichFlow ne garantit pas l’adéquation des documents générés à des cas juridiques particuliers
             </li>
           </ul>
         </section>
@@ -100,8 +86,7 @@ export default function TOSPage() {
           </p>
           <ul>
             <li>
-              <strong>Essai gratuit :</strong> 15 crédit gratuit à l'inscription. Une fois les crédits 
-              terminés, vous pouvez passer au plan payant.
+              <strong>Essai gratuit :</strong> Accès initial selon les conditions en vigueur à l'inscription.
             </li>
             <li>
               <strong>Annulation :</strong> Vous pouvez annuler votre abonnement
@@ -122,9 +107,6 @@ export default function TOSPage() {
               <li>des dommages indirects ou pertes de profits</li>
               <li>des pertes de données</li>
               <li>de l’utilisation incorrecte de la plateforme</li>
-              <li>
-                des décisions prises sur la base des contenus générés
-              </li>
             </ul>
           </p>
         </section>
@@ -132,38 +114,29 @@ export default function TOSPage() {
         <section>
           <h2>8. Disponibilité du service</h2>
           <p>
-            PichFlow vise une disponibilité continue du service, sans garantie absolue.
-
-Des interruptions temporaires peuvent survenir pour maintenance, mise à jour ou cas techniques.
+            PichFlow vise une disponibilité continue du service, sans garantie absolue. Des interruptions temporaires peuvent survenir pour maintenance, mise à jour ou raisons techniques.
           </p>
         </section>
-
         
         <section>
           <h2>9. Propriété intellectuelle</h2>
           <p>
-L’ensemble de la plateforme PichFlow (interface, design, fonctionnalités, code, algorithmes) est protégé par les droits de propriété intellectuelle.
-
-Toute reproduction, distribution ou exploitation non autorisée est strictement interdite.
-                </p>
+            L’ensemble de la plateforme PichFlow (interface, design, fonctionnalités, code, algorithmes) est protégé par les droits de propriété intellectuelle. Toute reproduction, distribution ou exploitation non autorisée est strictement interdite.
+          </p>
         </section>
-
 
         <section>
           <h2>10. Modification des conditions</h2>
           <p>
-            PichFlow se réserve le droit de modifier les présentes Conditions d’Utilisation à tout moment.
-
-Les utilisateurs seront informés des modifications importantes par email ou via la plateforme.      </p>
+            PichFlow se réserve le droit de modifier les présentes Conditions d’Utilisation à tout moment. Les utilisateurs seront informés des modifications importantes par email ou via la plateforme.
+          </p>
         </section>
-
 
         <section>
           <h2>11. Droit applicable</h2>
           <p>
-            Les présentes Conditions d’Utilisation sont régies par le droit applicable dans 
-            le pays d’exploitation de la société éditrice.
-             </p>
+            Les présentes Conditions d’Utilisation sont régies par le droit applicable dans le pays d’exploitation de la société éditrice.
+          </p>
         </section>
       </div>
     </div>

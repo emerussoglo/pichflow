@@ -59,20 +59,6 @@ export default function DashboardPage() {
       className: "icon-facture",
       link: "/factures",
     },
-    // {
-    //   title: "Contenu Marketing IA",
-    //   desc: "Générez des articles de blog SEO, posts réseaux sociaux et emails marketing en quelques clics.",
-    //   icon: "fa-handshake",
-    //   className: "icon-marketing",
-    //   link: "/contenu-ia",
-    // },
-    // {
-    //   title: "Copywriting IA",
-    //   desc: "Créez des pages de vente, landing pages et textes publicitaires avec les méthodes AIDA, PAS et plus.",
-    //   icon: "fa-lightbulb",
-    //   className: "icon-copy",
-    //   link: "/copywriting",
-    // },
     {
       title: "Rapports",
       desc: "Catégorisation automatique des revenus et dépenses avec alertes financières intelligentes.",

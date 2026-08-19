@@ -238,12 +238,12 @@ export default function Connexion() {
             <div className="info-icon-box">
               <i className="fa-solid fa-bolt-lightning"></i>
             </div>
-            <h2>Marketing IA + Facturation</h2>
-            <p>Générez du contenu percutant et gérez vos finances en toute simplicité.</p>
+            <h2>Gestion financière & Facturation</h2>
+            <p>Pilotez votre activité et gérez vos finances en toute simplicité.</p>
             
             <ul className="info-list">
-              <li><i className="fa-solid fa-circle-check"></i> Articles SEO et posts réseaux sociaux</li>
-              <li><i className="fa-solid fa-circle-check"></i> Copywriting avec méthodes AIDA, PAS</li>
+              <li><i className="fa-solid fa-circle-check"></i> Devis et factures illimités</li>
+              <li><i className="fa-solid fa-circle-check"></i> Suivi comptable automatisé</li>
               <li><i className="fa-solid fa-circle-check"></i> Facturation et comptabilité automatisées</li>
             </ul>
           </div>

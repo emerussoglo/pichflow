@@ -57,7 +57,7 @@ body {
   width: 32px; height: 32px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center; color: var(--white);
 }
-.logo-text { font-weight: 700; font-size: 1.5rem; color: var(--white); }
+.logo-text { font-weight: 800; font-size: 1.5rem; color: var(--white); }
 
 .sidebar-menu { padding: 10px 14px; display: flex; flex-direction: column; height: 100%; }
 
@@ -406,8 +406,6 @@ padding: 0; }
 
 
 @media (max-width: 768px) {
-  
-  
   .sidebar { display: none; }
   .dashboard-main { margin-left: 0; padding-bottom: 0px; padding: 0px;}
 .tools-grid{

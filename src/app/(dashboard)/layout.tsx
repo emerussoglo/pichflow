@@ -80,15 +80,13 @@ export default function DashboardLayout({
     { name: "Clients", path: "/clients", icon: "fa-user-group" },
     { name: "Devis", path: "/devis", icon: "fas fa-receipt" },
     { name: "Factures", path: "/factures", icon: "fa-file-invoice-dollar" },
-    // { name: "Marketing ", path: "/contenu-ia", icon: "fa-handshake" },
-    // { name: "Copywriting ", path: "/copywriting", icon: "fa-lightbulb" },
     { name: "Rapports ", path: "/rapports", icon: "fa-chart-pie" },
     { name: "Paramètres ", path: "/parametres", icon: "fa-gear" },
   ];
 
   const sidebarPrimaryItems = allMenuItems.slice(0, 4);
   const sidebarSecondaryItems = allMenuItems.slice(4);
-  const mobileMenuItems = allMenuItems.filter((item) => item.name !== "Rapports " && item.name !== "Paramètres ");
+  const mobileMenuItems = allMenuItems.filter((item) => item.name !== "Rapports " );
 
   const activeItem = allMenuItems.find((item) => item.path === pathname);
   const activeTitle = activeItem ? activeItem.name : "Dashboard";
@@ -106,7 +104,7 @@ export default function DashboardLayout({
             <span className="logo-text">
               <span className="ft">ll</span>Pich<span className="blue-text">Flow</span>
             </span>
-          </Link>
+          </Link> 
         </div>
 
         <nav className="sidebar-menu">
@@ -143,7 +141,7 @@ export default function DashboardLayout({
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", padding: "3px 7px", borderRadius: "20px", background: "rgba(0,0,0,0.03)", border: "2px solid rgba(0,0,0,0.5)", cursor: "pointer" }}
             >
-              <div className="credits-badge" style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.9rem", fontWeight: "900", color: "#000", padding: "2px 6px", background: "#fff", borderRadius: "12px" }}>
+              <div className="credits-badge" style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: ".9rem", fontWeight: "900", color: "#000", padding: "2px 6px", background: "#fff", borderRadius: "12px" }}>
                 <i className="fa-solid fa-coins" style={{ color: "#000" }}></i>
                 <span>{credits}</span>
               </div>
@@ -177,7 +175,7 @@ export default function DashboardLayout({
             )}
           </div>
         </header>
-
+        
         <section className="content-area">{children}</section>
       </main>
 

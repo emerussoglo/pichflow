@@ -5,42 +5,41 @@ import Link from 'next/link';
 export default function SupportPage() {
   const [activeTab, setActiveTab] = useState<number | null>(null);
 
- const faqs = [
-  { 
-    q: "Comment créer un compte sur PichFlow ?", 
-    a: "L'inscription est rapide : cliquez sur le bouton 'S'inscrire', renseignez votre nom et email, puis validez votre compte avec le code OTP reçu par mail pour accéder instantanément à votre tableau de bord." 
-  },
-  { 
-    q: "Comment générer un devis professionnel ?", 
-    a: "Rendez-vous dans l'onglet 'Documents', choisissez 'Nouveau Devis', remplissez les informations de votre client et vos prestations. Vous pouvez ensuite l'envoyer directement ou le télécharger." 
-  },
-  { 
-    q: "Comment créer une facture normalisée ?", 
-    a: "Une fois votre prestation terminée, vous pouvez transformer un devis en facture en un clic ou en créer une nouvelle. Le système génère automatiquement une facture conforme à vos obligations fiscales." 
-  },
-  { 
-    q: "Comment utiliser l'IA pour mon contenu marketing ?", 
-    a: "Accédez à l'outil de génération de contenu, décrivez votre produit ou service, et notre IA vous proposera des publications optimisées pour vos réseaux sociaux en quelques secondes." 
-  },
-  { 
-    q: "L'IA peut-elle m'aider pour le copywriting ?", 
-    a: "Absolument. PichFlow inclut des modèles de copywriting basés sur les meilleures structures de vente pour rédiger vos emails marketing, fiches produits et pages de vente percutantes." 
-  },
-  { 
-    q: "Comment fonctionne le système de crédits ?", 
-    a: "Chaque génération de contenu par l'IA consomme des crédits. Vous recevez des crédits gratuits à l'inscription, et vous pouvez recharger votre compte selon vos besoins (Essential ou Business)." 
-  },
-  { 
-    q: "Puis-je gérer mes finances si je suis freelance ?", 
-    a: "Oui, PichFlow est conçu spécifiquement pour les freelances et PME. Il centralise votre facturation, votre gestion de clients et votre marketing au même endroit pour vous faire gagner du temps." 
-  }
-];
+  const faqs = [
+    { 
+      q: "Comment créer un compte sur PichFlow ?", 
+      a: "L'inscription est rapide : cliquez sur le bouton 'S'inscrire', renseignez votre nom et email, puis validez votre compte avec le code OTP reçu par mail pour accéder instantanément à votre tableau de bord." 
+    },
+    { 
+      q: "Comment générer un devis professionnel ?", 
+      a: "Rendez-vous dans l'onglet 'Devis', choisissez 'Nouveau Devis', remplissez les informations de votre client et vos prestations. Vous pouvez ensuite l'exporter ou l'envoyer directement." 
+    },
+    { 
+      q: "Comment créer une facture normalisée ?", 
+      a: "Rendez-vous dans l'onglet 'Factures', cliquez sur 'Nouvelle Facture' (ou transformez un devis validé en facture en un clic). Le système génère un document conforme à vos attentes." 
+    },
+    { 
+      q: "Puis-je suivre mes factures en attente ou impayées ?", 
+      a: "Oui, votre tableau de bord et votre page de rapports centralisent le Chiffre d'Affaires global, les montants en attente ainsi que les alertes sur les factures ayant dépassé leur date d'échéance." 
+    },
+    { 
+      q: "Comment exporter mes rapports d'activité ?", 
+      a: "Depuis la section 'Rapports', vous disposez d'un bouton d'export PDF en haut à droite pour télécharger un récapitulatif complet de vos factures, devis et revenus." 
+    },
+    { 
+      q: "Puis-je gérer facilement mes clients sur la plateforme ?", 
+      a: "Tout à fait. L'onglet 'Clients' vous permet de centraliser toutes les coordonnées de vos clients pour les associer rapidement à vos devis et factures." 
+    },
+    { 
+      q: "Puis-je gérer mes finances si je suis freelance ou PME ?", 
+      a: "Oui, PichFlow est conçu spécifiquement pour les indépendants et petites structures afin de simplifier toute la gestion administrative et financière au même endroit." 
+    }
+  ];
 
   return (
     <div className="sup-wrapper">
       <div className="sup-container">
         
-        {/* En-tête */}
         <br /><br /> 
         <div className="sup-header">
           <span className="sup-tag">Assistance PichFlow</span>
@@ -50,7 +49,6 @@ export default function SupportPage() {
 
         <div className="sup-grid">
           
-          {/* Section FAQ avec boutons + et - explicites */}
           <div className="sup-faq">
             <h2 className="sup-title">Questions fréquentes</h2>
             <div className="faq-stack">
@@ -78,11 +76,10 @@ export default function SupportPage() {
             </div>
           </div>
 
-          {/* Formulaire stylisé */}
           <div className="sup-form-section">
             <div className="form-card">
               <h2 className="sup-title">Envoyez-nous un message</h2>
-              <form className="custom-form">
+              <form className="custom-form" onSubmit={(e) => e.preventDefault()}>
                 <div className="field">
                   <label>Nom complet</label>
                   <input type="text" placeholder="Ex: Jean Dupont" />
