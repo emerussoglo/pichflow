@@ -8,7 +8,7 @@ export default function PrivacyPage() {
         <Link href="/" className="back-link">
           <i className="fa-solid fa-arrow-left"></i> Retour à l'accueil
         </Link>
-        
+
         <h1>Politique de Confidentialité – PichFlow </h1>
         <p className="last-update">Dernière mise à jour : 21 Décembre 2025</p>
 
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
           <ul>
             <li><strong>Informations de compte :</strong> Nom, adresse email, mot de passe.</li>
             <li><strong>Données professionnelles :</strong> Nom de l'entreprise, adresse de facturation, numéro de TVA (si applicable) et d'autres numéros.</li>
-            <li><strong>Données de contenu :</strong> Historique des actions sur le dashboard (création de factures, devis, contenus, etc.).</li>
+            <li><strong>Données de contenu :</strong> Historique des actions sur le dashboard (création de factures, devis, etc.).</li>
             <li><strong>Données financières :</strong> Montant, date et type d’abonnement. Historique des factures et devis créés via PichFlow. Aucune donnée bancaire n’est stockée : les paiements sont gérés par nos prestataires (ex. Stripe, PayPal, Mobile Money via API tierce).</li>
           </ul>
         </section>
@@ -35,33 +35,32 @@ export default function PrivacyPage() {
           <p>Vos données sont utilisées exclusivement pour :</p>
           <ul>
             <li>Assurer l’accès sécurisé à votre compte.</li>
-            <li>Générer vos documents (factures, devis, contenus IA).</li>
+            <li>Générer vos documents (factures, devis).</li>
             <li>Gérer vos abonnements et paiements.</li>
             <li>Vous envoyer des alertes et notifications importantes.</li>
-            <li>Améliorer la qualité du service et nos modèles IA (données anonymisées uniquement)
-            </li>
+            <li>Améliorer la qualité du service (données anonymisées uniquement).</li>
           </ul>
-          <p>  Aucune donnée n’est exploitée à des fins publicitaires.</p>
+          <p>Aucune donnée n’est exploitée à des fins publicitaires.</p>
         </section>
 
         <section>
           <h2>4. Conservation des données</h2>
           <ul>
-            <li>Documents comptables (factures, devis) : jusqu’à 5 ans (obligations légales)</li>
-            <li>Données de paiement : gérées par Stripe/PayPal/Mobile Money (non conservées par PichFlow)</li>
+            <li>Documents comptables (factures, devis) : jusqu’à 5 ans (obligations légales).</li>
+            <li>Données de paiement : gérées par Stripe/PayPal/Mobile Money (non conservées par PichFlow).</li>
           </ul>
         </section>
 
         <section>
           <h2>5. Partage des données</h2>
           <p>
-           Vos données ne sont jamais vendues.
+            Vos données ne sont jamais vendues.
           </p>
            <ul>
-            <li>Nos prestataires techniques (hébergeur, email provider, services IA).</li>
+            <li>Nos prestataires techniques (hébergeur, email provider).</li>
             <li>Nos prestataires de paiement (Stripe, PayPal, Mobile Money API).</li>
             <li>Les autorités compétentes si la loi l’exige.</li>
-          </ul>
+           </ul>
           <p>Chaque utilisateur n’accède qu’à ses propres données.</p>
         </section>
 
@@ -69,9 +68,9 @@ export default function PrivacyPage() {
           <h2>6. Sécurité</h2>
           <p>
             Nous appliquons des mesures renforcées :
-             </p>
+          </p>
           <ul>
-            <li>Chiffrement HTTPS/TLS</li>
+            <li>Chiffrement HTTPS/TLS.</li>
             <li>Hashage des mots de passe (bcrypt/argon2).</li>
             <li>Stockage isolé des données sensibles.</li>
             <li>Accès par rôle pour les administrateurs.</li>
@@ -82,8 +81,8 @@ export default function PrivacyPage() {
         <section>
           <h2>7. Contact</h2>
           <p>
-           Pour toute question relative à la confidentialité :
-           support@pichflow.com
+            Pour toute question relative à la confidentialité :
+            support@pichflow.com
           </p>
         </section>
       </div>
