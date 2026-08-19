@@ -140,25 +140,25 @@ export default function Home() {
         </div>  
       </section>
 
-      <section id="features" className="features reveal">
+      <section id="features" className="features reveal delay-2">
         <div className="features-header">
           <h2>
             Fonctionnalités de la <span>plateforme</span>
           </h2>
           <p>PichFlow regroupe les outils essentiels pour les freelances et PME : facturation, devis et gestion financière automatisée.</p>
         </div>
-        <div className="features-grid">
-          <div className="feature-card active-border">
+        <div className="features-grid reveal delay-3">
+          <div className="feature-card active-border reveal delay-2">
             <div className="icon-box blue-alt"><i className="fa-solid fa-file-invoice-dollar"></i></div>
             <h3>Facturation</h3>
             <p>Créez des factures professionnelles en quelques secondes, avec envoi automatique par mail et téléchargements illimités.</p> 
           </div>
-          <div className="feature-card active-border">
+          <div className="feature-card active-border reveal delay-2">
             <div className="icon-box blue-alt"><i className="fa-solid fas fa-receipt"></i></div>
             <h3>Devis Rapides</h3>
             <p>Générez des devis clairs, précis et prêts à l’envoi. Téléchargement PDF illimité et mise en forme automatique.</p>
           </div>
-          <div className="feature-card"> 
+          <div className="feature-card reveal delay-2"> 
             <div className="icon-box orange-alt"><i className="fa-solid fa-chart-pie"></i></div>
             <h3>Comptabilité et rapports</h3>
             <p>Vos revenus et dépenses sont automatiquement catégorisés, avec alertes intelligentes et rapports prêts à exporter.</p>
@@ -166,9 +166,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="showcase-section reveal">
-        <div className="showcase-container reveal">
-          <div className="showcase-text">
+      <section className="showcase-section reveal delay-1">
+        <div className="showcase-container reveal delay-1">
+          <div className="showcase-text reveal delay-2">
             <h2>PichFlow est <span>idéal</span> pour</h2>
             <ul className="showcase-list">
               <li><i className="fa-solid fa-check"></i> Entrepreneurs</li>
@@ -178,7 +178,7 @@ export default function Home() {
               <li><i className="fa-solid fa-check"></i> Prestataires de services B2B</li>
             </ul>
           </div> 
-          <div className="showcase-visual">
+          <div className="showcase-visual reveal delay-1">
             <div className="circle-bg"></div>
             <img src="/img/img2.jpg" alt="Entrepreneur" className="person-img" />
             <div className="floating-badge badge-bottom-left">
@@ -192,7 +192,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="video-section">
+      <section className="video-section reveal delay-1">
         <div className="container">
           <div className="video-header">
             <h2>Un tableau de bord simple et intuitif</h2>
@@ -244,7 +244,7 @@ export default function Home() {
         </div> 
       </section>
 
-      <section className="testimonials reveal" id="testimonials">
+      <section className="testimonials reveal delay-1" id="testimonials">
         <div className="features-header">
           <h3>Ce qu'ils <span>disent de nous</span></h3>
           <p>Découvrez les avis de nos utilisateurs ci-dessous.</p>

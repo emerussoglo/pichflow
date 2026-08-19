@@ -11,14 +11,13 @@ export const Navbar = () => {
 
   return ( 
     <header className="header">
-      <Link href="/" className="logo" onClick={closeMenu}>
-        {/* <div className="logo-icon">
-          <i className="fa-solid fa-circle-nodes"></i> 
-        </div> */ }
+      <div>
+        <Link href="/" className="logo" onClick={closeMenu}>
         <span className="logo-text">
           <span className="ft" >ll</span>Pich<span className="blue-text">Flow</span>
         </span>
       </Link>
+      </div>
 
       <nav className={`nav-menu ${isOpen ? "open" : ""}`}>
         <ul className="nav-links">

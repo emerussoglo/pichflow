@@ -83,69 +83,17 @@ body {
 }
 
 /* Logo: Icone + Texte collé */
-.logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  flex: 1; /* Prend l'espace à gauche */
-  gap: 3px;
-  
-}
 
-.logo-icon {
-  background: var(--primary);
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  color: white;
-  transform: rotateZ(0deg);
-}
-
-.logo-text {
-  font-weight: 900;
-  font-size: 1.5rem;
-  color: #0f172a;
-  font-family: "Plus Jakarta Sans", sans-serif;
-  letter-spacing: 0px;
-
-  white-space: nowrap;           
-  overflow: hidden;              
-  width: 0;                   
-  animation: typing 1s steps(30, end) forwards; 
-}
-
-.logo .logo-text .ft {
-  font-size: 23px;
-  gap: 0px;
-  color: #000;
-  letter-spacing: -.9px;
-  font-weight: 800;
-  margin: 0px;
-}
-@keyframes typing {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 18ch; /* changez 18 par le nombre de caractères à afficher */
-  }
-}
-
-.logo-text span {
-  color: var(--primary);
-  letter-spacing: 0;
-}
 
 
 /* Liens centrés */
 .nav-menu {
   display: flex;
+  text-align: center;
   align-items: center;
-  justify-content: space-between;
-  flex: 2; /* Pour centrer les liens */
+  gap: 25px;
+  /* justify-content: space-between; */
+  /* flex: 1;  */
 }
 
 .nav-links {
@@ -176,6 +124,50 @@ body {
   flex: 1; /* Aligne à droite */
 }
 
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  width: fit-content;
+  flex: 0 0 auto;
+  gap: 3px;
+}
+
+.logo-text {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #0f172a;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: fit-content;
+  animation: typing 1s steps(30, end) forwards;
+}
+
+.logo .logo-text .ft {
+  font-size: 23px;
+  color: #000;
+  letter-spacing: -0.9px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.logo-text span {
+  color: var(--primary);
+  letter-spacing: 0;
+}
+
+/* @keyframes typing {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 18ch;
+  }
+} */
 .btn-text {
   text-decoration: none;
   color: #0f172a;
