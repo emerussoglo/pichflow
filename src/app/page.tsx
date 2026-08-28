@@ -72,11 +72,12 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="hero-social reveal delay-3">
           <div className="avatar-group">
-            <div className="avatar"><img src="https://i.pravatar.cc/100?u=166" alt="user" /></div>
+            <div className="avatar"><img src="/img/h/h1.jpeg" alt="user" /></div>
             <div className="avatar"><img src="https://i.pravatar.cc/100?u=167" alt="user" /></div>
-            <div className="avatar"><img src="https://i.pravatar.cc/100?u=4" alt="user" /></div>
-            <div className="avatar"><img src="https://i.pravatar.cc/100?u=2" alt="user" /></div>
-            <div className="avatar"><img src="https://i.pravatar.cc/100?u=151" alt="user" /></div>
+            <div className="avatar"><img src="/img/h/h2.jpeg" alt="user" /></div>
+            <div className="avatar"><img src="/img/h/f1.jpeg" alt="user" /></div>
+            <div className="avatar"><img src="/img/h/f2.jpeg" alt="user" /></div>
+            <div className="avatar"><img src="/img/h/h3.jpeg" alt="user" /></div>
           </div>
           <div className="social-text">
             <span className="count" style={{ marginBottom: '8px' }}>+150 entrepreneurs</span> 
@@ -174,7 +175,7 @@ export default function Home() {
             <p>Un tableau de bord intuitif pour gérer votre entreprise, sans comptable.</p>
           </div>
           <div className="video-wrapper">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/HDDZczlqPvs?rel=0" title="Démonstration PichFlow" frameBorder="0" allowFullScreen></iframe>
+            <iframe width="600" height="315" src="https://www.youtube.com/embed/HDDZczlqPvs?rel=0" title="Démonstration PichFlow" frameBorder="0" allowFullScreen></iframe>
           </div> 
         </div>
       </section> 

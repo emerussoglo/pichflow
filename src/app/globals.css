@@ -268,23 +268,6 @@ body {
   }
 }
 
-.badge {
-  background: var(--bg-badge);
-  color: var(--primary);
-  padding: 6px 9px;
-  border-radius: 50px; 
-  font-size: .7rem;
-  font-weight: bold;
-  backdrop-filter: blur(50px);
-  display: inline-flex;
-   border: 1.5px solid #babacc;
-  align-items: center;
-  gap: 5px;
-  background: #fff;
-  margin-bottom: .6rem;
-  background: #000;
-  color: #fff;
-}
 
 .hero h1 {
   font-size: 4.8rem;
@@ -449,10 +432,10 @@ body {
 }
 
 .avatar {
-  width: 35px;
-  height: 35px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: 3px solid var(--white);
+  border: 2px solid var(--white);
   margin-left: -12px; /* Créé le chevauchement */
   overflow: hidden;
   background: #e2e8f0;
@@ -1324,8 +1307,6 @@ color: #fff;
   }
 }
 
-/* --- PAGE AUTH (INSCRIPTION / CONNEXION) --- */
-
 
 /* Côté Formulaire */
 .auth-form-side {
@@ -2091,22 +2072,39 @@ color: red;}
 }
 
 /* --- SECTION CTA FINALE --- */
+@keyframes moveGrid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 48px 48px;
+  }
+}
+
 .final-cta {
   text-align: center;
-  background-color: #050505; /* Fond noir profond */
-  /* Motif de grille à points subtils sur tout l'arrière-plan de la section */
-  background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
+  background-color: #050505; 
   padding: 80px 20px;
   position: relative;
   overflow: hidden;
   width: 100%;
 }
 
+/* Calque dédié pour animer les points en arrière-plan en toute sécurité */
+.final-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  animation: moveGrid 5s linear infinite;
+  z-index: 1;
+}
+
 .cta-content {
-  background: rgba(15, 23, 42, 0.75); /* Fond semi-transparent pour l'effet verre */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-radius: 24px;
   padding: 60px 40px;
   color: white;
@@ -2115,11 +2113,9 @@ color: red;}
   margin: 0 auto;
   position: relative;
   z-index: 2;
-  border: 1px solid rgba(51, 65, 85, 0.6);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(37, 99, 235, 0.15);
 }
 
-/* Petits effets décoratifs lumineux en fond */
+/* Effets décoratifs lumineux en fond */
 .cta-content::before {
   content: '';
   position: absolute;
@@ -2127,7 +2123,7 @@ color: red;}
   left: -10%;
   width: 350px;
   height: 400px;
-  background: rgba(37, 99, 235, 0.15);
+  /* background: rgba(37, 99, 235, 0.15); */
   border-radius: 50%;
   filter: blur(80px);
   z-index: 1;
@@ -2140,12 +2136,11 @@ color: red;}
   right: -10%;
   width: 350px;
   height: 400px;
-  background: rgba(124, 58, 237, 0.15);
+  /* background: rgba(124, 58, 237, 0.15); */
   border-radius: 50%;
   filter: blur(80px);
   z-index: 1;
 }
-
 /* S'assure que le contenu textuel passe bien au-dessus des lueurs */
 .cta-content h2,
 .cta-content p,
@@ -2545,16 +2540,37 @@ color: red;}
 
 
 
+@keyframes moveGrid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 48px 48px;
+  }
+}
+
 /* --- SECTION TEMOIGNAGES --- */
 .testimonials {
   padding: 80px 0;
   background-color: #050505; /* Fond noir profond */
-  /* Motif de grille à points subtils adapté au fond sombre */
-  background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
-  background-size: 24px 24px; /* Espacement de la grille */
   width: 100%;
   position: relative;
   overflow: hidden;
+  z-index: -1;
+}
+
+/* Calque dédié pour animer les points en arrière-plan */
+.testimonials::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  animation: moveGrid 5s linear infinite;
+  z-index: 1;
 }
 
 .testimonials .features-header h3 {
@@ -2579,6 +2595,7 @@ color: red;}
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  z-index: 100;
 }
 
 .testimonials-wrapper {
@@ -3373,7 +3390,6 @@ color: red;}
 }
 
 
-
 /* Section Principale */
 .video-section {
   display: flex;
@@ -3381,15 +3397,27 @@ color: red;}
   justify-content: center;
   align-items: center;
   background-color: #050505; /* Fond noir profond assorti */
-  /* Motif de grille à points subtils */
-  background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
   /* Utilisation de clamp pour un padding fluide entre mobile et desktop */
   padding: clamp(40px, 4vw, 90px) 20px;
   color: #ffffff;
   text-align: center;
   width: 100%;
+  position: relative;
   overflow: hidden; /* Sécurité anti-débordement horizontal */
+}
+
+/* Calque dédié pour animer les points en arrière-plan */
+.video-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  animation: moveGrid 5s linear infinite;
+  z-index: -1;
 }
 
 .video-container {
@@ -3399,7 +3427,8 @@ color: red;}
   align-items: center;
   max-width: 1000px;
   margin: 0 auto;
-  width: 100%;
+  width: 100%; 
+  z-index: 100;
 }
 
 .video-header h2 {
@@ -3427,9 +3456,9 @@ color: red;}
   position: relative;
   padding-bottom: 10px; 
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
-  height: 450px; /* Légèrement plus grand pour un meilleur rendu desktop */
+  height: 440px; 
   overflow: hidden;
   border-radius: 16px; /* Des coins arrondis plus modernes */
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(37, 99, 235, 0.15); /* Ombre portée douce avec lueur bleue subtile */
