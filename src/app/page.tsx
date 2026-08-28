@@ -26,11 +26,13 @@ export default function Home() {
   const [open, setOpen] = useState(false);
 
   const testimonials = [
-    { name: "Julie B.", text: "La gestion de mes factures n'a jamais été aussi simple et rapide.", color: "orange" },
-    { name: "Thomas R.", text: "Un outil indispensable pour tout freelance qui veut gérer sa comptabilité proprement.", color: "green" },
-    { name: "Anna L.", text: "Une approche structurée pour améliorer efficacement les fonctionnalités de gestion.", color: "blue" },
-    { name: "Marc D.", text: "L'interface est d'une fluidité incroyable. La facturation ne me prend plus que quelques secondes par jour.", color: "purple" },
-    { name: "Sarah M.", text: "Le support est réactif et les outils de comptabilité sont d'une clarté exemplaire.", color: "blue" }
+
+    { name: "Kodjo T.", text: "La gestion de mes factures normalisées n'a jamais été aussi simple.", color: "orange" },
+    { name: "Aïcha S.", text: "Un outil indispensable pour mon entreprise, je gagne un temps précieux sur ma comptabilité.", color: "green" },
+    { name: "Moussa D.", text: "Enfin une solution qui comprend les besoins des entrepreneurs au Bénin.", color: "blue" },
+    { name: "Bénédicte K.", text: "Interface fluide et rapide. Ma facturation est réglée en quelques secondes.", color: "purple" },
+    { name: "Fabrice O.", text: "Le support est réactif et les outils sont parfaitement adaptés à notre marché.", color: "blue" }
+  
   ];
 
   const duplicatedTestimonials = [...testimonials, ...testimonials];
@@ -45,16 +47,10 @@ export default function Home() {
   const pricingConfig: Record<string, CurrencyConfig> = {
     'EUR': { symbol: '€', rate: 1, label: 'EUR', symbolAfter: true },
     'XOF': { symbol: ' FCFA', rate: 655.957, label: 'XOF', symbolAfter: true },
-    'XAF': { symbol: ' FCFA', rate: 655.957, label: 'XAF', symbolAfter: true },
     'USD': { symbol: '$', rate: 1.08, label: 'USD', symbolAfter: false },
-    'GBP': { symbol: '£', rate: 0.86, label: 'GBP', symbolAfter: false },
-    'CAD': { symbol: 'CA$', rate: 1.48, label: 'CAD', symbolAfter: false },
-    'MAD': { symbol: ' DH', rate: 10.95, label: 'MAD', symbolAfter: true },
-    'GNF': { symbol: ' FG', rate: 9300, label: 'GNF', symbolAfter: true },
   };
 
   const [currentImg, setCurrentImg] = useState(1);
-
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImg((prev) => (prev === 3 ? 1 : prev + 1));
@@ -62,25 +58,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  const [currency, setCurrency] = useState<CurrencyConfig>(pricingConfig['EUR']);
-
-  useEffect(() => {
-    async function detectLocation() {
-      try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        const suggested = data.currency;
-        if (pricingConfig[suggested]) {
-          setCurrency(pricingConfig[suggested]);
-        } else if (data.continent_code === 'AF') {
-          setCurrency(pricingConfig['XOF']);
-        }
-      } catch (error) {
-        console.error("Erreur localisation:", error);
-      }
-    }
-    detectLocation();
-  }, []);
+  const [currency, setCurrency] = useState<CurrencyConfig>(pricingConfig['XOF']);
 
   const formatPrice = (euroAmount: number): string => {
     if (euroAmount === 0) return currency.symbolAfter ? `0${currency.symbol}` : `${currency.symbol}0`;
@@ -101,10 +79,10 @@ export default function Home() {
             <div className="avatar"><img src="https://i.pravatar.cc/100?u=151" alt="user" /></div>
           </div>
           <div className="social-text">
-            <span className="count" style={{ marginBottom: '8px' }}>+150 utilisateurs</span> 
+            <span className="count" style={{ marginBottom: '8px' }}>+150 entrepreneurs</span> 
             <div className="stars">
               <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-              <span className="rating">3.8/5</span>
+              <span className="rating">4.8/5</span>
             </div>
           </div>
         </div>
@@ -113,21 +91,19 @@ export default function Home() {
 
         <h1 className="reveal delay-1">
           Simplifiez votre <span className="span1">facturation</span> et <br />
-          
           boostez votre gestion.  <br /> 
         </h1>
  
         <p className="reveal delay-2">
-         Une seule plateforme pour piloter votre activité. PichFlow vous permet de créer devis, factures 
-         et de suivre votre comptabilité dans une interface simple, rapide et automatisable.
-        </p>
+          La solution tout-en-un pour les entreprises au Bénin. Créez vos factures normalisées, gérez vos devis et pilotez votre activité en toute conformité, sans avoir besoin d'être un expert-comptable.
+        </p> 
 
         <div className="hero-btns reveal delay-3">
           <a href="/inscription" className="btn-primary">
-            Essai gratuit <i className="fa-solid fa-circle-arrow-right"></i>
+            Démarrer gratuitement <i className="fa-solid fa-circle-arrow-right"></i>
           </a>
           <a href="#features" className="btn-outline">
-           Fonctionnalités{" "}
+            Nos solutions{" "}
             <i className="fa-solid fa-arrow-down"></i>
           </a> 
         </div>
@@ -135,57 +111,56 @@ export default function Home() {
 
       <section className="dashboard-preview reveal delay-3">
         <div className="preview-container">
-          <img src="/img/dashboard-prev.png" alt="Aperçu du Dashboard PitchFlow" className="main-preview" /> 
-          
+          <img src="/img/dashboard-prev.png" alt="Aperçu du Dashboard PichFlow" className="main-preview" /> 
         </div>  
       </section>
 
       <section id="features" className="features reveal delay-2">
         <div className="features-header">
           <h2>
-            Fonctionnalités de la <span>plateforme</span>
+            Des outils adaptés au marché<span> béninois</span>.
           </h2>
-          <p>PichFlow regroupe les outils essentiels pour les freelances et PME : facturation, devis et gestion financière automatisée.</p>
+          <p>PichFlow offre une suite financière complète pour simplifier la vie des entrepreneurs et petites entreprises au Bénin.</p>
         </div>
         <div className="features-grid reveal delay-3">
           <div className="feature-card active-border reveal delay-2">
             <div className="icon-box blue-alt"><i className="fa-solid fa-file-invoice-dollar"></i></div>
-            <h3>Facturation</h3>
-            <p>Créez des factures professionnelles en quelques secondes, avec envoi automatique par mail et téléchargements illimités.</p> 
+            <h3>Factures Normalisées</h3>
+            <p>Générez des factures conformes aux exigences fiscales locales en un clic. Envoyez-les par email instantanément.</p> 
           </div>
           <div className="feature-card active-border reveal delay-2">
             <div className="icon-box blue-alt"><i className="fa-solid fas fa-receipt"></i></div>
-            <h3>Devis Rapides</h3>
-            <p>Générez des devis clairs, précis et prêts à l’envoi. Téléchargement PDF illimité et mise en forme automatique.</p>
+            <h3>Devis Professionnels</h3>
+            <p>Impressionnez vos clients avec des devis clairs, professionnels et prêts à être transformés en factures.</p>
           </div>
           <div className="feature-card reveal delay-2"> 
             <div className="icon-box orange-alt"><i className="fa-solid fa-chart-pie"></i></div>
-            <h3>Comptabilité et rapports</h3>
-            <p>Vos revenus et dépenses sont automatiquement catégorisés, avec alertes intelligentes et rapports prêts à exporter.</p>
+            <h3>Gestion Simplifiée</h3>
+            <p>Suivez vos revenus et dépenses sans effort. Obtenez une vision claire de votre santé financière à tout moment.</p>
           </div>
         </div>
       </section>
-
+ 
       <section className="showcase-section reveal delay-1">
         <div className="showcase-container reveal delay-1">
           <div className="showcase-text reveal delay-2">
-            <h2>PichFlow est <span>idéal</span> pour</h2>
+            <h2>Conçu pour les <span>entrepreneurs locaux</span></h2>
             <ul className="showcase-list">
-              <li><i className="fa-solid fa-check"></i> Entrepreneurs</li>
-              <li><i className="fa-solid fa-check"></i> Freelances (graphistes, développeurs, rédacteurs, coachs...)</li>
-              <li><i className="fa-solid fa-check"></i> Artisans (électriciens, plombiers, décorateurs...)</li>
-              <li><i className="fa-solid fa-check"></i> Agences et studios créatifs</li>
-              <li><i className="fa-solid fa-check"></i> Prestataires de services B2B</li>
+              <li><i className="fa-solid fa-check"></i> Indépendants et freelances</li>
+              <li><i className="fa-solid fa-check"></i> Commerçants et artisans</li>
+              <li><i className="fa-solid fa-check"></i> Agences de services</li>
+              <li><i className="fa-solid fa-check"></i> PME en pleine croissance</li>
+              <li><i className="fa-solid fa-check"></i> Consultants indépendants</li>
             </ul>
           </div> 
           <div className="showcase-visual reveal delay-1">
             <div className="circle-bg"></div>
-            <img src="/img/img2.jpg" alt="Entrepreneur" className="person-img" />
+            <img src="/img/img2.jpg" alt="Entrepreneur Béninois" className="person-img" />
             <div className="floating-badge badge-bottom-left">
               <div className="badge-icon-check"><i className="fa-solid fa-check"></i></div> 
               <div className="badge-content">
-                <span className="amount">Facture</span>
-                <small>Créée</small>
+                <span className="amount">Conforme</span>
+                <small>DGI</small>
               </div>
             </div>
           </div>
@@ -195,8 +170,8 @@ export default function Home() {
       <section className="video-section reveal delay-1">
         <div className="container">
           <div className="video-header">
-            <h2>Un tableau de bord simple et intuitif</h2>
-            <p>Découvrez comment gérer vos devis et factures en toute sérénité.</p>
+            <h2>PichFlow en action</h2>
+            <p>Un tableau de bord intuitif pour gérer votre entreprise, sans comptable.</p>
           </div>
           <div className="video-wrapper">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/HDDZczlqPvs?rel=0" title="Démonstration PichFlow" frameBorder="0" allowFullScreen></iframe>
@@ -207,34 +182,34 @@ export default function Home() {
       <section className="pichflow-automated-compta reveal">
         <div className="pich-container reveal">
           <div className="pich-header">
-            <h2 className="pich-title">Votre comptabilité automatisée</h2>
-            <p className="pich-subtitle">Grâce à la catégorisation intelligente, au suivi des paiements et aux rapports instantanés, votre gestion devient fluide.</p> 
+            <h2 className="pich-title">La confiance avant <span>tout</span>.</h2>
+            <p className="pich-subtitle">Nous vous aidons à bâtir une relation de confiance avec vos clients grâce à une transparence totale.</p> 
           </div> <br/>
           <div className="pich-grid">
             <div className="pich-card">
               <div className="pich-image-box bg-soft-blue">
                 <div className="pich-badge">
-                  <span>Valider et <br /> transmettre <br/> <b>facture électronique</b></span>
-                  <button>valider</button>
+                  <span>Facture <br/> <b>Normalisée</b></span>
+                  <button>Valide</button>
                 </div>
                 <img src={`/img/fact${currentImg}.png`} alt="Conformité" style={{ transition: 'all 0.5s ease' }} />
               </div>
               <div className="pich-content">
-                <h3>Conformité simplifiée</h3>
-                <p>Assurez une conformité native avec la facturation électronique sans effort supplémentaire.</p>
+                <h3>Conformité fiscale</h3>
+                <p>Respectez vos obligations en générant des documents normalisés, reconnus et acceptés.</p>
               </div>
             </div>
             <div className="pich-card">
               <div className="pich-image-box bg-soft-blue"> 
                 <div className="pich-badge">
-                  <span>Suivi en <br/> <b>temps réel</b></span>
-                  <button>suivi</button>
+                  <span>Authenticité <br/> <b>Vérifiée</b></span>
+                  <button>Vérifié</button>
                 </div>
                 <img src="/img/img8.jpg" alt="suivi" />
               </div>
               <div className="pich-content">
-                <h3>Vérification d'authenticité</h3>
-                <p>Vérifiez instantanément la validité d'une facture ou d'un devis émis sur Pichflow pour éviter toute falsification.</p>
+                <h3>Validation des documents</h3>
+                <p>Vos clients peuvent vérifier l'authenticité de vos factures instantanément sur notre plateforme.</p>
               </div>
             </div>
           </div>
@@ -246,8 +221,8 @@ export default function Home() {
 
       <section className="testimonials reveal delay-1" id="testimonials">
         <div className="features-header">
-          <h3>Ce qu'ils <span>disent de nous</span></h3>
-          <p>Découvrez les avis de nos utilisateurs ci-dessous.</p>
+          <h3>La communauté <span>PichFlow</span>.</h3>
+          <p>Ils ont adopté la solution pour faire croître leur entreprise au Bénin.</p>
         </div>
         <div className="testimonials-container">
           <div className="testimonials-marquee">
@@ -268,17 +243,21 @@ export default function Home() {
       </section>
 
       <section className="faq-section">
-        <div className="faq-container">
+        <div className="faq-container"> 
           <div className="faq-header">
             <span className="faq-badge">FAQ</span>
-            <h2>Questions <span>fréquentes</span></h2>
-            <p>Tout ce que vous devez savoir sur PichFlow</p>
+            <h2>On réponds à <span>tout</span>.</h2>
+            <p>Tout ce que vous devez savoir pour démarrer</p>
           </div>
           <div className="faq-list">
             {[
-              { q: "Comment générer une facture ?", a: "Commencez par configurer vos informations dans les paramètres. Rendez-vous dans la section Factures, remplissez le formulaire, puis cliquez sur Générer." },
-              { q: "Mes données sont-elles sécurisées ?", a: "Oui. PichFlow stocke vos données de manière sécurisée et garantit leur confidentialité." },
-              { q: "Puis-je utiliser PichFlow sur mobile ?", a: "Absolument. PichFlow est entièrement responsive pour gérer votre activité où que vous soyez." }
+              
+              { q: "PichFlow permet-il de créer des factures normalisées ?", a: "Oui, PichFlow est conçu pour aider les entreprises au Bénin à éditer des factures conformes aux normes fiscales locales et sécurisées." },
+              { q: "Est-ce que je peux utiliser PichFlow sans comptable ?", a: "Absolument. La plateforme est conçue pour être simple et intuitive, accessible à tout entrepreneur, avec ou sans base en comptabilité." },
+              { q: "Quelles sont les méthodes de paiement disponibles ?", a: "PichFlow s'adapte à vos besoins. Vous pouvez gérer vos documents et nous intégrons les solutions de paiement mobiles locales." },
+              { q: "Comment fonctionnent les crédits sur PichFlow ?", a: "Les crédits vous permettent de générer vos documents et d'utiliser les fonctionnalités avancées. Vous commencez gratuitement, puis vous rechargez avec le pack de votre choix selon vos besoins." },
+              { q: "Mes données et factures sont-elles sécurisées ?", a: "Oui, toutes vos données de facturation et de comptabilité sont strictement protégées et hébergées sur des serveurs hautement sécurisés." },
+              { q: "Comment mes clients peuvent-ils vérifier une facture ?", a: "Chaque document émis dispose d'options de traçabilité permettant de valider son authenticité instantanément via notre module de vérification dédié." }
             ].map((item, i) => (
               <details key={i} className="faq-item">
                 <summary className="faq-question">{item.q}<i className="fa-solid fa-chevron-down"></i></summary>
@@ -291,47 +270,55 @@ export default function Home() {
 
       <section className="final-cta reveal">
         <div className="cta-content">
-          <h2>Prêt à propulser votre activité ?</h2>
-          <p>Rejoignez plus de 150 professionnels qui automatisent déjà leur gestion avec PichFlow.</p> 
+          <h2>Prêt à propulser votre entreprise ?</h2>
+          <p>Rejoignez les entrepreneurs béninois qui ont déjà automatisé leur gestion avec PichFlow.</p> 
           <div className="hero-btns">
-            <a href="/inscription" className="btn-white">Essayez maintenant <i className="fa-solid fa-rocket"></i></a>
+            <a href="/inscription" className="btn-white">Essayer gratuitement <i className="fa-solid fa-rocket"></i></a>
           </div>
-          <span className="no-card">Aucune carte de crédit requise pour commencer votre essai.</span>
+          <span className="no-card">Aucune carte bancaire requise pour commencer votre essai.</span>
         </div>
       </section>
 
-      <section id="pricing" className="pricing reveal">
+     <section id="pricing" className="pricing reveal">
         <div className="pricing-header">
-          <h2>Des tarifs <span>simples et flexibles</span></h2>
-          <p>Essayez gratuitement, puis rechargez vos crédits selon vos besoins.</p>
+          <h2>Des tarifs <span>simples et accessibles</span></h2>
+          <p>Commencez gratuitement, puis rechargez vos crédits selon votre volume d'activité pour gérer vos factures en toute sérénité.</p>
         </div>
         <div className="pricing-grid">
           <div className="pricing-card">
             <h3>Essai Gratuit</h3>
             <div className="price">{formatPrice(0)}</div>
             <ul className="price-features">
-              <li><i className="fa-solid fa-circle-check"></i> Crédits offerts</li>
+              <li><i className="fa-solid fa-circle-check"></i> Crédits offerts pour tester</li>
               <li><i className="fa-solid fa-circle-check"></i> Facturation & rapports</li>
+              <li><i className="fa-solid fa-circle-check"></i> Génération de devis</li>
+              <li><i className="fa-solid fa-circle-check"></i> Support par email</li>
             </ul>
-            <button className="btn-outline-pricing">Essai gratuit</button>
+            <a href="/inscription" className="btn-outline-pricing" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>Essai gratuit</a>
           </div>
+          
           <div className="pricing-card featured">
             <h3>Pack Essentiel</h3>
             <div className="price">{formatPrice(1.525)}<span>/80 crédits</span></div>
             <ul className="price-features">
               <li><i className="fa-solid fa-circle-check"></i> 80 crédits inclus</li>
               <li><i className="fa-solid fa-circle-check"></i> Facturation illimitée</li>
+              <li><i className="fa-solid fa-circle-check"></i> Devis et reçus instantanés</li>
+              <li><i className="fa-solid fa-circle-check"></i> Support prioritaire</li>
             </ul>
-            <button className="btn-primary-pricing">Acheter pack</button>
+            <a href="/buy-credits" className="btn-primary-pricing" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>Acheter pack</a>
           </div>
+
           <div className="pricing-card"> 
             <h3>Pack Business</h3>
             <div className="price">{formatPrice(2.438)}<span>/200 crédits</span></div> 
             <ul className="price-features">
               <li><i className="fa-solid fa-circle-check"></i> 200 crédits inclus</li>
               <li><i className="fa-solid fa-circle-check"></i> Économisez 20%</li>
+              <li><i className="fa-solid fa-circle-check"></i> Volume élevé pour PME</li>
+              <li><i className="fa-solid fa-circle-check"></i> Gestion multi-clients</li>
             </ul>
-            <button className="btn-blue-pricing">Acheter pack</button>
+            <a href="/buy-credits" className="btn-blue-pricing" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>Acheter pack</a>
           </div>
         </div>
       </section>
