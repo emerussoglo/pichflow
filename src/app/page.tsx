@@ -177,18 +177,18 @@ export default function Home() {
       <div className="circle-bg"></div>
       <img src="/img/image-3.jpg" alt="Entrepreneur local" className="person-img" />
       <div className="floating-badge badge-bottom-left">
-        <div className="badge-icon-check"><i className="fa-solid fa-check"></i></div> 
+        {/* <div className="badge-icon-check"><i className="fa-solid fa-check"></i></div> 
         <div className="badge-content">
           <span className="amount">Conforme</span>
           <small>DGI</small>
-        </div>
+        </div> */}
       </div>
     </div>
 
     {/* Grille des 6 avatars / profils animés */}
     <div className="avatars-grid">
       <div className="avatar-card">
-        <div className="avatar"><img src="/img/h/h1.jpeg" alt="Freelances" /></div>
+        <div className="avatar"><img src="/img/h/h3.jpeg" alt="Freelances" /></div>
         <span>Freelances</span>
       </div>
       <div className="avatar-card">
@@ -196,11 +196,11 @@ export default function Home() {
         <span>Commerçants</span>
       </div>
       <div className="avatar-card">
-        <div className="avatar"><img src="/img/h/h2.jpeg" alt="Artisans" /></div>
+        <div className="avatar"><img src="/img/h/h5.jpg" alt="Artisans" /></div>
         <span>Artisans</span>
       </div>
       <div className="avatar-card">
-        <div className="avatar"><img src="/img/h/f1.jpeg" alt="Agences" /></div>
+        <div className="avatar"><img src="/img/h/h1.jpeg" alt="Agences" /></div>
         <span>Agences</span>
       </div>
       <div className="avatar-card">
@@ -208,7 +208,7 @@ export default function Home() {
         <span>Consultants</span>
       </div>
       <div className="avatar-card">
-        <div className="avatar"><img src="/img/h/h3.jpeg" alt="PME" /></div>
+        <div className="avatar"><img src="/img/h/h4.jpg" alt="PME" /></div>
         <span>PME</span>
       </div>
     </div>
