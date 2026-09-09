@@ -270,7 +270,7 @@ body {
 
 
 .hero h1 {
-  font-size: 4.8rem;
+  font-size: 4.5rem;
   line-height: 72px;
   font-weight: 800;
     font-family: "Plus Jakarta Sans", sans-serif;
@@ -322,7 +322,7 @@ body {
 
 .hero p {
   color: var(--text-grey);
-  font-size: 1.1rem;
+  font-size: 1rem;
   max-width: 650px;
   margin: 0 auto 2rem;
   line-height: 1.5;
@@ -421,7 +421,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 10px;
   margin-top: 2rem;
 }
 
@@ -432,8 +432,8 @@ body {
 }
 
 .avatar {
-  width: 38px;
-  height: 38px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   border: 2px solid var(--white);
   margin-left: -12px; /* Créé le chevauchement */
@@ -1153,160 +1153,6 @@ body {
     font-size: 0.85rem;
   }
 }
-
-/* --- FOOTER SECTION --- */
-.main-footer {
-  background-color: #0f172a; /* Bleu très foncé comme l'image */
-  color: #94a3b8;
-  padding: 60px 8% 30px; /* Padding ajusté */
-  font-size: 0.85rem; /* Texte légèrement plus petit */
-}
-
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr; /* Structure à deux colonnes */
-  gap: 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Ligne très discrète */
-  padding-bottom: 40px;
-}
-
-/* --- LOGO FOOTER (ORANGE) --- */
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
-}
-
-.logo-icon-orange {
-  background: #ff7a30; /* Couleur orange exacte */
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  color: white;
-  font-size: 0.8rem;
-}
-
-.footer-logo span {
-  color: white;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-.footer-container .logo .logo-text .ft{
-color: #fff;
-}
-.footer-brand p {
-  line-height: 1.6;
-  max-width: 320px;
-  color: #94a3b8;
-}
-
-/* --- COLONNE INFOS --- */
-.footer-links h4 {
-  color: white;
-  font-weight: 600;
-  margin-bottom: 20px;
-  font-size: 0.95rem;
-  text-transform: uppercase; /* Pour le style "Titre" */
-  letter-spacing: 0.5px;
-}
-
-.footer-links ul {
-  list-style: none;
-}
-
-.footer-links li {
-  margin-bottom: 10px;
-}
-
-.footer-links a {
-  text-decoration: none;
-  color: #94a3b8;
-  transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-  color: #ff7a30; /* Rappel de l'orange au survol */
-}
-
-/* --- BARRE DE COPYRIGHT & RESEAUX --- */
-.footer-bottom {
-  max-width: 1200px;
-  margin: 30px auto 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer-bottom p {
-  font-size: 0.8rem;
-  opacity: 0.7;
-}
-
-.social-icons {
-  display: flex;
-  gap: 18px;
-}
-
-.social-icons a {
-  color: #94a3b8;
-  font-size: 1.1rem;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.social-icons a:hover {
-  color: white;
-  transform: translateY(-3px);
-}
-
-.footer-logo .blue-text {
-  color: #2563eb;
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 768px) {
-  .footer-container {
-    grid-template-columns: 1fr; /* Empilé sur mobile */
-    text-align: center;
-    gap: 20px;
-    padding: 0;
-  }
-
-  .footer-logo {
-    justify-content: center;
-  }
-
-  .footer-brand p {
-    margin: 0 auto;
-  }
-
-  .footer-bottom {
-    flex-direction: column-reverse; /* Icônes au-dessus du copyright sur mobile */
-    gap: 2px;
-    margin-top: 5px;
-  }
-  .footer-container .footer-brand {
-    margin-top: -30px;
-  }
-  .footer-container .footer-logo {
-    margin-bottom: 10px;
-  }
-  .footer-container .footer-links h4 {
-    margin-bottom: 10px;
-  }
-  .footer-container .footer-links li {
-    font-weight: bold;
-  }
-  .footer-logo .blue-text {
-    color: #2563eb;
-  }
-}
-
 
 /* Côté Formulaire */
 .auth-form-side {
@@ -4396,3 +4242,160 @@ color: red;}
 .btn-link:hover {
   color: #ffffff;
 }
+
+
+
+
+/* --- FOOTER SECTION --- */
+.main-footer {
+  background-color: #000; /* Bleu très foncé comme l'image */
+  color: #94a3b8;
+  padding: 60px 8% 30px; /* Padding ajusté */
+  font-size: 0.85rem; /* Texte légèrement plus petit */
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Structure à deux colonnes */
+  gap: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Ligne très discrète */
+  padding-bottom: 40px;
+}
+
+/* --- LOGO FOOTER (ORANGE) --- */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.logo-icon-orange {
+  background: #ff7a30; /* Couleur orange exacte */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.footer-logo span {
+  color: white;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.footer-container .logo .logo-text .ft{
+color: #fff;
+}
+.footer-brand p {
+  line-height: 1.6;
+  max-width: 320px;
+  color: #94a3b8;
+}
+
+/* --- COLONNE INFOS --- */
+.footer-links h4 {
+  color: white;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  text-transform: uppercase; /* Pour le style "Titre" */
+  letter-spacing: 0.5px;
+}
+
+.footer-links ul {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #94a3b8;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #ff7a30; /* Rappel de l'orange au survol */
+}
+
+/* --- BARRE DE COPYRIGHT & RESEAUX --- */
+.footer-bottom {
+  max-width: 1200px;
+  margin: 30px auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.social-icons {
+  display: flex;
+  gap: 18px;
+}
+
+.social-icons a {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: white;
+  transform: translateY(-3px);
+}
+
+.footer-logo .blue-text {
+  color: #2563eb;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr; /* Empilé sur mobile */
+    text-align: center;
+    gap: 20px;
+    padding: 0;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
+
+  .footer-brand p {
+    margin: 0 auto;
+  }
+
+  .footer-bottom {
+    flex-direction: column-reverse; /* Icônes au-dessus du copyright sur mobile */
+    gap: 2px;
+    margin-top: 5px;
+  }
+  .footer-container .footer-brand {
+    margin-top: -30px;
+  }
+  .footer-container .footer-logo {
+    margin-bottom: 10px;
+  }
+  .footer-container .footer-links h4 {
+    margin-bottom: 10px;
+  }
+  .footer-container .footer-links li {
+    font-weight: bold;
+  }
+  .footer-logo .blue-text {
+    color: #2563eb;
+  }
+}
+

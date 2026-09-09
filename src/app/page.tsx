@@ -86,13 +86,13 @@ export default function Home() {
               <span className="rating">4.8/5</span>
             </div>
           </div>
-        </div>
+        </div> 
         
         <br />
 
         <h1 className="reveal delay-1">
-          Simplifiez votre <span className="span1">facturation</span> et <br />
-          boostez votre gestion.  <br /> 
+          Simplifiez votre <br /> <span className="span1">facturation</span> et boostez <br />
+          votre gestion.  <br /> 
         </h1>
  
         <p className="reveal delay-2">

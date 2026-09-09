@@ -24,10 +24,10 @@ export const Navbar = () => {
           {/* Modification ici : ajout du slash '/' devant l'ancre */}
           <li> 
             <Link href="/#features" onClick={closeMenu}>Fonctionnalités</Link>
-          </li>
+          </li> 
           <li>
             <Link href="/#pricing" onClick={closeMenu}>Tarifs</Link>
-          </li>
+          </li> 
           <li>
             <Link href="/#testimonials" onClick={closeMenu}>Témoignages</Link>
           </li>
