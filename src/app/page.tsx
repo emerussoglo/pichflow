@@ -104,8 +104,8 @@ export default function Home() {
             Démarrer gratuitement <i className="fa-solid fa-circle-arrow-right"></i>
           </a>
           <a href="#features" className="btn-outline">
-            Nos solutions{" "}
-            <i className="fa-solid fa-arrow-down"></i>
+            Nos fonctionnalités{" "}
+            {/* <i className="fa-solid fa-arrow-down"></i> */}
           </a> 
         </div>
       </section>
@@ -119,54 +119,102 @@ export default function Home() {
       <section id="features" className="features reveal delay-2">
         <div className="features-header">
           <h2>
-            Des outils adaptés au marché<span> béninois</span>.
+            Tout ce qu'il vous faut pour gérer<span> votre activité</span>.
           </h2>
           <p>PichFlow offre une suite financière complète pour simplifier la vie des entrepreneurs et petites entreprises au Bénin.</p>
         </div>
         <div className="features-grid reveal delay-3">
-          <div className="feature-card active-border reveal delay-2">
-            <div className="icon-box blue-alt"><i className="fa-solid fa-file-invoice-dollar"></i></div>
-            <h3>Factures Normalisées</h3>
-            <p>Générez des factures conformes aux exigences fiscales locales en un clic. Envoyez-les par email instantanément.</p> 
-          </div>
-          <div className="feature-card active-border reveal delay-2">
-            <div className="icon-box blue-alt"><i className="fa-solid fas fa-receipt"></i></div>
-            <h3>Devis Professionnels</h3>
-            <p>Impressionnez vos clients avec des devis clairs, professionnels et prêts à être transformés en factures.</p>
-          </div>
-          <div className="feature-card reveal delay-2"> 
-            <div className="icon-box orange-alt"><i className="fa-solid fa-chart-pie"></i></div>
-            <h3>Gestion Simplifiée</h3>
-            <p>Suivez vos revenus et dépenses sans effort. Obtenez une vision claire de votre santé financière à tout moment.</p>
-          </div>
-        </div>
+  <div className="feature-card active-border reveal delay-2">
+    <div className="icon-box blue-alt"><i className="fa-solid fa-file-invoice-dollar"></i></div>
+    <h3>Factures normalisées</h3>
+    <p>Générez des factures conformes aux exigences fiscales locales en quelques secondes.</p> 
+  </div>
+  
+  <div className="feature-card active-border reveal delay-2">
+    <div className="icon-box blue-alt"><i className="fa-solid fas fa-receipt"></i></div>
+    <h3>Devis professionnels</h3>
+    <p>Créez des devis clairs, professionnels et prêts à être transformés en factures.</p>
+  </div>
+  
+  <div className="feature-card reveal delay-2"> 
+    <div className="icon-box orange-alt"><i className="fa-solid fa-chart-pie"></i></div>
+    <h3>Gestion simplifiée</h3>
+    <p>Suivez vos revenus, dépenses et performances depuis un espace unique.</p>
+  </div>
+
+  <div className="feature-card reveal delay-2"> 
+    <div className="icon-box blue-alt"><i className="fa-solid fa-users"></i></div>
+    <h3>Gestion clients</h3>
+    <p>Centralisez vos clients et retrouvez rapidement toutes leurs informations.</p>
+  </div>
+
+  <div className="feature-card reveal delay-2"> 
+    <div className="icon-box blue-alt"><i className="fa-solid fa-shield-halved"></i></div>
+    <h3>Vérification des documents</h3>
+    <p>Permettez à vos clients de vérifier instantanément l’authenticité de vos documents.</p>
+  </div>
+
+  <div className="feature-card reveal delay-2"> 
+    <div className="icon-box blue-alt"><i className="fa-solid fa-envelope-open-text"></i></div>
+    <h3>Rapports & activité</h3>
+    <p>Obtenez une vision claire de votre activité grâce à des données faciles à comprendre.</p>
+  </div>
+</div>
       </section>
  
       <section className="showcase-section reveal delay-1">
-        <div className="showcase-container reveal delay-1">
-          <div className="showcase-text reveal delay-2">
-            <h2>Conçu pour les <span>entrepreneurs locaux</span></h2>
-            <ul className="showcase-list">
-              <li><i className="fa-solid fa-check"></i> Indépendants et freelances</li>
-              <li><i className="fa-solid fa-check"></i> Commerçants et artisans</li>
-              <li><i className="fa-solid fa-check"></i> Agences de services</li>
-              <li><i className="fa-solid fa-check"></i> PME en pleine croissance</li>
-              <li><i className="fa-solid fa-check"></i> Consultants indépendants</li>
-            </ul>
-          </div> 
-          <div className="showcase-visual reveal delay-1">
-            <div className="circle-bg"></div>
-            <img src="/img/img2.jpg" alt="Entrepreneur Béninois" className="person-img" />
-            <div className="floating-badge badge-bottom-left">
-              <div className="badge-icon-check"><i className="fa-solid fa-check"></i></div> 
-              <div className="badge-content">
-                <span className="amount">Conforme</span>
-                <small>DGI</small>
-              </div>
-            </div>
-          </div>
+  <div className="showcase-container reveal delay-1">
+    
+    {/* En-tête centré */}
+    <div className="showcase-header-center">
+      {/* <span className="showcase-badge-top">Pour chaque activité</span> */}
+      <h2>Conçu pour ceux qui font avancer <span>l'économie locale</span>.</h2>
+      <p>Que vous soyez indépendant ou à la tête d'une PME, PichFlow s'adapte à votre activité.</p>
+    </div>
+
+    {/* Grande image principale avec effet */}
+    <div className="showcase-visual-main reveal delay-1">
+      <div className="circle-bg"></div>
+      <img src="/img/image-3.jpg" alt="Entrepreneur local" className="person-img" />
+      <div className="floating-badge badge-bottom-left">
+        <div className="badge-icon-check"><i className="fa-solid fa-check"></i></div> 
+        <div className="badge-content">
+          <span className="amount">Conforme</span>
+          <small>DGI</small>
         </div>
-      </section>
+      </div>
+    </div>
+
+    {/* Grille des 6 avatars / profils animés */}
+    <div className="avatars-grid">
+      <div className="avatar-card">
+        <div className="avatar"><img src="/img/h/h1.jpeg" alt="Freelances" /></div>
+        <span>Freelances</span>
+      </div>
+      <div className="avatar-card">
+        <div className="avatar"><img src="https://i.pravatar.cc/100?u=167" alt="Commerçants" /></div>
+        <span>Commerçants</span>
+      </div>
+      <div className="avatar-card">
+        <div className="avatar"><img src="/img/h/h2.jpeg" alt="Artisans" /></div>
+        <span>Artisans</span>
+      </div>
+      <div className="avatar-card">
+        <div className="avatar"><img src="/img/h/f1.jpeg" alt="Agences" /></div>
+        <span>Agences</span>
+      </div>
+      <div className="avatar-card">
+        <div className="avatar"><img src="/img/h/f2.jpeg" alt="Consultants" /></div>
+        <span>Consultants</span>
+      </div>
+      <div className="avatar-card">
+        <div className="avatar"><img src="/img/h/h3.jpeg" alt="PME" /></div>
+        <span>PME</span>
+      </div>
+    </div>
+
+  </div>
+</section>
 
       <section className="video-section reveal delay-1">
         <div className="container">
@@ -181,44 +229,60 @@ export default function Home() {
       </section> 
 
       <section className="pichflow-automated-compta reveal">
-        <div className="pich-container reveal">
-          <div className="pich-header">
-            <h2 className="pich-title">La confiance avant <span>tout</span>.</h2>
-            <p className="pich-subtitle">Nous vous aidons à bâtir une relation de confiance avec vos clients grâce à une transparence totale.</p> 
-          </div> <br/>
-          <div className="pich-grid">
-            <div className="pich-card">
-              <div className="pich-image-box bg-soft-blue">
-                <div className="pich-badge">
-                  <span>Facture <br/> <b>Normalisée</b></span>
-                  <button>Valide</button>
-                </div>
-                <img src={`/img/fact${currentImg}.png`} alt="Conformité" style={{ transition: 'all 0.5s ease' }} />
-              </div>
-              <div className="pich-content">
-                <h3>Conformité fiscale</h3>
-                <p>Respectez vos obligations en générant des documents normalisés, reconnus et acceptés.</p>
-              </div>
+  <div className="pich-container reveal"> 
+    <div className="pich-header">
+      {/* <span style={{ color: '#2563eb', fontWeight: 600, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Confiance</span> */}
+      <h2 className="pich-title">La confiance avant <span>tout</span>.</h2>
+      <p className="pich-subtitle">Vos documents doivent être fiables, vérifiables et conformes.</p> 
+    </div>
+    
+    <div className="pich-grid">
+      {/* Carte 1 */}
+      <div className="pich-card">
+        <div>
+          <div className="pich-card-top">
+            <div className="pich-icon-box">
+              <i className="fa-solid fa-file-invoice"></i>
             </div>
-            <div className="pich-card">
-              <div className="pich-image-box bg-soft-blue"> 
-                <div className="pich-badge">
-                  <span>Authenticité <br/> <b>Vérifiée</b></span>
-                  <button>Vérifié</button>
-                </div>
-                <img src="/img/img8.jpg" alt="suivi" />
-              </div>
-              <div className="pich-content">
-                <h3>Validation des documents</h3>
-                <p>Vos clients peuvent vérifier l'authenticité de vos factures instantanément sur notre plateforme.</p>
-              </div>
+            <span className="pich-status-badge">Valide</span>
+          </div>
+          <div className="pich-content">
+            <h3>Conformité fiscale</h3>
+            <p>Respectez vos obligations grâce à des documents normalisés, reconnus et acceptés.</p>
+          </div>
+        </div>
+        <div className="pich-image-box">
+          <img src={`/img/fact${currentImg}.png`} alt="Facture normalisée" style={{ transition: 'all 0.5s ease' }} />
+        </div>
+      </div>
+
+      {/* Carte 2 */}
+      <div className="pich-card">
+        <div>
+          <div className="pich-card-top">
+            <div className="pich-icon-box">
+              <i className="fa-solid fa-shield-halved"></i>
             </div>
+            <span className="pich-status-badge">Vérifié</span>
           </div>
-          <div className="pich-footer">
-            <a href="/verifier" className="btn-primary" style={{ display: 'inline-flex' }}>Vérifier une facture ou un devis</a>
+          <div className="pich-content">
+            <h3>Authenticité vérifiée</h3>
+            <p>Vos clients peuvent vérifier l'authenticité de vos documents instantanément.</p>
           </div>
-        </div> 
-      </section>
+        </div>
+        <div className="pich-image-box">
+          <img src="/img/img8.jpg" alt="Vérification de document" />
+        </div>
+      </div>
+    </div>
+
+    <div className="pich-footer">
+      <a href="/verifier" className="btn-primary" style={{ display: 'inline-flex', padding: '16px 35px', borderRadius: '50px', background: '#2563eb', color: '#fff', textDecoration: 'none', fontWeight: 700, gap: '10px', alignItems: 'center' }}>
+        Vérifier une facture ou un devis <i className="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </div> 
+</section>
 
       <section className="testimonials reveal delay-1" id="testimonials">
         <div className="features-header">
