@@ -178,7 +178,7 @@ export default function Home() {
       <img src="/img/image-3.jpg" alt="Entrepreneur local" className="person-img" />
       <div className="floating-badge badge-bottom-left">
         {/* <div className="badge-icon-check"><i className="fa-solid fa-check"></i></div> 
-        <div className="badge-content">
+        <div className="badge-content"> cls
           <span className="amount">Conforme</span>
           <small>DGI</small>
         </div> */}
